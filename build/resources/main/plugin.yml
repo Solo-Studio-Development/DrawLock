@@ -1,0 +1,8 @@
+name: DrawLock
+version: '1.0.0'
+main: net.solostudio.drawlock.DrawLock
+api-version: '1.20'
+authors: [ Solo Studio ]
+description: 🔒 "Secure your gameplay with a swipe—draw your way to safety!"
+website: https://discord.gg/CxawDwDZtd
+folia-supported: true

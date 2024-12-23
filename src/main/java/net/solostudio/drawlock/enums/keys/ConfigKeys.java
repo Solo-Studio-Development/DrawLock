@@ -8,7 +8,28 @@ import java.util.List;
 
 public enum ConfigKeys {
     DATABASE("database.type"),
-    LANGUAGE("language");
+    LANGUAGE("language"),
+
+    ENCRYPTION_SECRET_KEY("encryption.secret-key"),
+    ENCRYPTION_SALT("encryption.salt"),
+    ENCRYPTION_IV("encryption.iv"),
+
+    BEAUTIFIER_JOIN_MESSAGE("beautifier.join.message"),
+    BEAUTIFIER_JOIN_MESSAGE_IS_ENABLED("beautifier.join.enabled"),
+
+    MINIMUM_PASSWORD_LENGTH("password.min-length"),
+
+    LOGIN_NAME("login.gui.name"),
+    LOGIN_SIZE("login.gui.size"),
+    LOGIN_TYPE("login.gui.type"),
+    LOGIN_SOUNDS_ENABLED("login.sounds.enabled"),
+    LOGIN_SOUNDS("login.sounds.name"),
+
+    REGISTER_NAME("register.gui.name"),
+    REGISTER_SIZE("register.gui.size"),
+    REGISTER_TYPE("register.gui.type"),
+    REGISTER_SOUNDS_ENABLED("register.sounds.enabled"),
+    REGISTER_SOUNDS("register.sounds.name");
 
     private final String path;
 

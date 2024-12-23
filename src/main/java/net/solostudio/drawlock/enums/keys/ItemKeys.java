@@ -5,7 +5,11 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public enum ItemKeys {
-    TEST("Test");
+    LOGIN_BLANK("login.gui.blank"),
+    LOGIN_PASSWORD("login.gui.password"),
+
+    REGISTER_BLANK("register.gui.blank"),
+    REGISTER_PASSWORD("register.gui.password");
 
     private final String path;
 

@@ -1,5 +1,6 @@
 package net.solostudio.drawlock.item;
 
+import net.solostudio.drawlock.processor.MessageProcessor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;

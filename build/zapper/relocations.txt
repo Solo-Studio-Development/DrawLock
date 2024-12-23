@@ -1,0 +1,3 @@
+org.bstats:net.solostudio.drawlock.libs.bstats
+org.h2:net.solostudio.drawlock.libs.h2
+com.github.Anon8281.universalScheduler:net.solostudio.drawlock.libs.universalScheduler

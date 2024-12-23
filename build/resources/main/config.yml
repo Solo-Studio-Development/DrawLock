@@ -1,0 +1,105 @@
+# ==============================================================
+# Language Configuration Section
+# ==============================================================
+
+language: "en" # Supported languages -> de, en
+# If you want to change the language of your plugin, choose from the available options: 'de' (German) or 'en' (English)
+
+# ==============================================================
+# Database Configuration
+# ==============================================================
+
+database:
+  type: mysql # Supported types -> MYSQL, H2
+
+  # MySQL-specific configuration
+  mysql:
+    host: localhost
+    port: 3306
+    database: coma112
+    username: root
+    password: "" # Enter your MySQL password here (leave empty for no password)
+    ssl: false
+    certificateverification: false
+    poolsize: 10
+    lifetime: 1800000
+
+  # This section is only necessary for MySQL. If using H2, you can ignore this part.
+  # Provides configuration for the MySQL connection, including host, port, and other settings.
+
+# ==============================================================
+# Important Encryption Settings (AES-256-GCM)
+# ==============================================================
+
+# Please do not show this to anyone else :) (To your Own and your Players safety)
+
+encryption:
+  secret-key: "dzyQXlqZydzaYIQMvGlwEpQsXtyFpjfG" # Length ==> 256 = 32 | 192 = 24 | 128 = 16 -- CHANGE THIS! THIS IS AN EXAMPLE GO TO https://www.lastpass.com/features/password-generator TO CREATE UNIQUE ONE
+  salt: "xYCOUaSrOMkiQrcisPdXTxjIDNLCPnbp" # A random value which is added at the beginning of the encrypted text. -- CHANGE THIS! THIS IS AN EXAMPLE GO TO https://www.lastpass.com/features/password-generator TO CREATE UNIQUE ONE
+  iv: "YWaUYyQMheDe" # Must be 12 characters long! -- CHANGE THIS! THIS IS AN EXAMPLE GO TO https://www.lastpass.com/features/password-generator TO CREATE UNIQUE ONE
+
+# ==============================================================
+# Password Setting
+# ==============================================================
+
+password:
+  min-length: 4
+
+# ==============================================================
+# Login Settings
+# ==============================================================
+
+login:
+  gui:
+    name: "&c&lLOGIN HERE"
+    size: 0
+    type: "DISPENSER" # If you want to use this set 0 to size! If you don't want to use this leave it blank. | https://jd.papermc.io/paper/1.21.4/org/bukkit/event/inventory/InventoryType.html
+    blank:
+      material: "GRAY_STAINED_GLASS_PANE"
+      amount: 1
+      name: "&8BLANK"
+      lore: []
+    password:
+      material: "LIME_STAINED_GLASS_PANE"
+      amount: 1
+      name: "&aPASSWORD"
+      lore: []
+  sounds:
+    enabled: true
+    name:
+      - "BLOCK_NOTE_BLOCK_BELL"
+
+# ==============================================================
+# Register Settings
+# ==============================================================
+
+register:
+  gui:
+    name: "&c&lREGISTER HERE"
+    size: 0
+    type: "DISPENSER" # If you want to use this set 0 to size! If you don't want to use this leave it blank. | https://jd.papermc.io/paper/1.21.4/org/bukkit/event/inventory/InventoryType.html
+    blank:
+      material: "GRAY_STAINED_GLASS_PANE"
+      amount: 1
+      name: "&8BLANK"
+      lore: []
+    password:
+      material: "LIME_STAINED_GLASS_PANE"
+      amount: 1
+      name: "&aPASSWORD"
+      lore: []
+  sounds:
+    enabled: true
+    name:
+      - "BLOCK_NOTE_BLOCK_BELL"
+
+# ==============================================================
+# Beautifier settings
+# ==============================================================
+
+beautifier:
+  join:
+    enabled: true
+    message:
+      - ""
+      - "&aHello {player}!"
