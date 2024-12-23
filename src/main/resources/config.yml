@@ -1,0 +1,28 @@
+# ==============================================================
+# Language Configuration Section
+# ==============================================================
+
+language: "en" # Supported languages -> de, en
+# If you want to change the language of your plugin, choose from the available options: 'de' (German) or 'en' (English)
+
+# ==============================================================
+# Database Configuration
+# ==============================================================
+
+database:
+  type: h2 # Supported types -> MYSQL, H2
+
+  # MySQL-specific configuration
+  mysql:
+    host: localhost
+    port: 3306
+    database: user
+    username: root
+    password: "" # Enter your MySQL password here (leave empty for no password)
+    ssl: false
+    certificateverification: false
+    poolsize: 10
+    lifetime: 1800000
+
+  # This section is only necessary for MySQL. If using H2, you can ignore this part.
+  # Provides configuration for the MySQL connection, including host, port, and other settings.
