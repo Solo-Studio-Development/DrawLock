@@ -85,13 +85,50 @@ public class MySQL extends AbstractDatabase {
         String query = "INSERT IGNORE INTO drawlock (PLAYER) VALUES (?)";
 
         try {
-            try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
-                preparedStatement.setString(1, playerName);
-                preparedStatement.executeUpdate();
+            if (!exists(playerName)) {
+                try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
+                    preparedStatement.setString(1, playerName);
+                    preparedStatement.executeUpdate();
+                }
             }
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());
         }
+    }
+
+    @Override
+    public boolean exists(@NotNull String playerName) {
+        String query = "SELECT * FROM drawlock WHERE PLAYER = ?";
+
+        try {
+            try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
+                preparedStatement.setString(1, playerName);
+
+                return preparedStatement.executeQuery().next();
+            }
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isRegistered(@NotNull String playerName) {
+        String query = "SELECT PASSWORD FROM drawlock WHERE PLAYER = ?";
+
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, playerName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String password = resultSet.getString("PASSWORD");
+                return password != null && !password.isEmpty();
+            }
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+        return false;
     }
 
     @Override

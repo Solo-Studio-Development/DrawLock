@@ -1,20 +1,21 @@
 package net.solostudio.drawlock.menu;
 
-import net.solostudio.drawlock.enums.keys.ConfigKeys;
+import net.solostudio.drawlock.DrawLock;
 import net.solostudio.drawlock.managers.MenuController;
 import net.solostudio.drawlock.processor.MessageProcessor;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("deprecation")
 public abstract class Menu implements InventoryHolder {
     protected MenuController menuController;
     protected Inventory inventory;
-    private boolean isClosing = false; // Track if the menu is being closed by the code
+    private boolean canClose = false;
 
     public Menu(@NotNull MenuController menuController) {
         this.menuController = menuController;
@@ -32,6 +33,7 @@ public abstract class Menu implements InventoryHolder {
     }
 
     public void open() {
+        canClose = false;
         String type = getType();
         int slots = getSlots();
 
@@ -39,29 +41,27 @@ public abstract class Menu implements InventoryHolder {
         else inventory = Bukkit.createInventory(this, slots, MessageProcessor.process(getMenuName()));
 
         this.setMenuItems();
-
         menuController.owner().openInventory(inventory);
     }
 
     public void close() {
-        isClosing = true;
-        if (inventory != null) {
-            inventory.clear();
-            menuController.owner().closeInventory();
-        }
+        canClose = true;
+        menuController.owner().closeInventory();
+
+        inventory = null;
     }
 
-    public void onClose(InventoryCloseEvent event) {
+    public void handleInventoryClose(final InventoryCloseEvent event) {
         if (event.getInventory().equals(inventory)) {
-            if (isClosing) {
-                inventory = null;
-            } else {
-                menuController.owner().openInventory(inventory);
+            if (!canClose) {
+                DrawLock.getInstance().getScheduler().runTask(DrawLock.getInstance(), () -> {
+                    canClose = false;
+                    menuController.owner().openInventory(inventory);
+                });
             }
         }
     }
 
-    public void resetClosingStatus() {
-        isClosing = false;
-    }
+
+
 }

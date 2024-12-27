@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/DrawLock.main.iml" filepath="$PROJECT_DIR$/.idea/modules/DrawLock.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/DrawLock.test.iml" filepath="$PROJECT_DIR$/.idea/modules/DrawLock.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/net.solostudio.DrawLock.main.iml" filepath="$PROJECT_DIR$/.idea/modules/net.solostudio.DrawLock.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/net.solostudio.DrawLock.test.iml" filepath="$PROJECT_DIR$/.idea/modules/net.solostudio.DrawLock.test.iml" />
     </modules>
   </component>
 </project>

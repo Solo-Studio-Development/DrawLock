@@ -11,6 +11,10 @@ public abstract class AbstractDatabase {
 
     public abstract void createPlayer(@NotNull String playerName);
 
+    public abstract boolean exists(@NotNull String playerName);
+
+    public abstract boolean isRegistered(@NotNull String playerName);
+
     public abstract void savePasswordToDatabase(@NotNull String playerName, @NotNull String password);
 
     public abstract String getPassword(@NotNull String playerName);

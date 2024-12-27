@@ -7,6 +7,7 @@ import net.solostudio.drawlock.managers.MenuController;
 import net.solostudio.drawlock.menu.Menu;
 import net.solostudio.drawlock.utils.AES256Utils;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -59,9 +60,9 @@ public class MenuRegister extends Menu {
                         .reduce((s1, s2) -> s1 + ", " + s2)
                         .orElse("");
                 String encryptedPassword = AES256Utils.encrypt(password);
-                DrawLock.getDatabase().savePasswordToDatabase(menuController.owner().getName(), Objects.requireNonNull(encryptedPassword));
 
                 close();
+                DrawLock.getDatabase().savePasswordToDatabase(menuController.owner().getName(), Objects.requireNonNull(encryptedPassword));
                 menuController.owner().sendMessage(DrawLock.getDatabase().getPassword(menuController.owner().getName()));
             }
         }
@@ -70,14 +71,12 @@ public class MenuRegister extends Menu {
     @Override
     public void setMenuItems() {
         IntStream.range(0, inventory.getSize()).forEach(index -> {
-            if (inventory.getItem(index) == null) {
-                inventory.setItem(index, ItemKeys.REGISTER_BLANK.getItem());
-            }
+            if (inventory.getItem(index) == null) inventory.setItem(index, ItemKeys.REGISTER_BLANK.getItem());
         });
     }
 
     @Override
-    public void close() {
-        super.close();
+    public void handleInventoryClose(final InventoryCloseEvent event) {
+        super.handleInventoryClose(event);
     }
 }

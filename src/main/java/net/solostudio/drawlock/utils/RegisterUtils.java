@@ -5,6 +5,7 @@ import net.solostudio.drawlock.commands.CommandDrawLock;
 import net.solostudio.drawlock.exception.CommandExceptionHandler;
 import net.solostudio.drawlock.listeners.JoinListener;
 import net.solostudio.drawlock.listeners.MenuListener;
+import net.solostudio.drawlock.listeners.QuitListener;
 import org.bukkit.Bukkit;
 import revxrsal.commands.bukkit.BukkitLamp;
 
@@ -14,6 +15,7 @@ public class RegisterUtils {
 
         Bukkit.getPluginManager().registerEvents(new MenuListener(), DrawLock.getInstance());
         Bukkit.getPluginManager().registerEvents(new JoinListener(), DrawLock.getInstance());
+        Bukkit.getPluginManager().registerEvents(new QuitListener(), DrawLock.getInstance());
 
         LoggerUtils.info("### Successfully registered 3 listener. ###");
     }

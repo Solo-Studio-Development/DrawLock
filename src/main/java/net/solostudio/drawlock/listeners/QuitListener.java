@@ -3,15 +3,13 @@ package net.solostudio.drawlock.listeners;
 import net.solostudio.drawlock.menu.Menu;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
-public class MenuListener implements Listener {
+public class QuitListener implements Listener {
     @EventHandler
-    public void onClick(final InventoryClickEvent event) {
+    public void onClose(final InventoryCloseEvent event) {
         if (!(event.getInventory().getHolder() instanceof Menu menu)) return;
 
-        event.setCancelled(true);
-        menu.handleMenu(event);
+        menu.handleInventoryClose(event);
     }
 }
