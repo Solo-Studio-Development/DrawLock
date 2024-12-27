@@ -64,10 +64,17 @@ login:
       amount: 1
       name: "&aPASSWORD"
       lore: []
+    error:
+      material: "RED_STAINED_GLASS_PANE"
+      amount: 1
+      name: "&cERROR"
+      lore: [ ]
   sounds:
     enabled: true
-    name:
+    success:
       - "BLOCK_NOTE_BLOCK_BELL"
+    denied:
+      - "BLOCK_NOTE_BLOCK_BIT"
 
 # ==============================================================
 # Register Settings
@@ -90,7 +97,7 @@ register:
       lore: []
   sounds:
     enabled: true
-    name:
+    success:
       - "BLOCK_NOTE_BLOCK_BELL"
 
 # ==============================================================

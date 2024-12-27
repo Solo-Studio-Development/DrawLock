@@ -4,6 +4,7 @@ import net.solostudio.drawlock.DrawLock;
 import net.solostudio.drawlock.enums.keys.ConfigKeys;
 import net.solostudio.drawlock.managers.MenuController;
 import net.solostudio.drawlock.menu.Menu;
+import net.solostudio.drawlock.menu.menus.MenuLogin;
 import net.solostudio.drawlock.menu.menus.MenuRegister;
 import net.solostudio.drawlock.utils.LoggerUtils;
 import org.bukkit.entity.Player;
@@ -19,7 +20,8 @@ public class JoinListener implements Listener {
 
         DrawLock.getDatabase().createPlayer(player.getName());
 
-        new MenuRegister(MenuController.getMenuUtils(player)).open();
+        if (DrawLock.getDatabase().isRegistered(player.getName())) new MenuLogin(MenuController.getMenuUtils(player)).open();
+        else new MenuRegister(MenuController.getMenuUtils(player)).open();
 
         if (!ConfigKeys.BEAUTIFIER_JOIN_MESSAGE_IS_ENABLED.getBoolean()) return;
 

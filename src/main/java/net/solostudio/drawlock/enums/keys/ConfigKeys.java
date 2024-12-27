@@ -22,14 +22,10 @@ public enum ConfigKeys {
     LOGIN_NAME("login.gui.name"),
     LOGIN_SIZE("login.gui.size"),
     LOGIN_TYPE("login.gui.type"),
-    LOGIN_SOUNDS_ENABLED("login.sounds.enabled"),
-    LOGIN_SOUNDS("login.sounds.name"),
 
     REGISTER_NAME("register.gui.name"),
     REGISTER_SIZE("register.gui.size"),
-    REGISTER_TYPE("register.gui.type"),
-    REGISTER_SOUNDS_ENABLED("register.sounds.enabled"),
-    REGISTER_SOUNDS("register.sounds.name");
+    REGISTER_TYPE("register.gui.type");
 
     private final String path;
 

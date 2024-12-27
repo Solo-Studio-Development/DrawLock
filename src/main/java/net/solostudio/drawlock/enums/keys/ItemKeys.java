@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 public enum ItemKeys {
     LOGIN_BLANK("login.gui.blank"),
     LOGIN_PASSWORD("login.gui.password"),
+    LOGIN_ERROR("login.gui.error"),
 
     REGISTER_BLANK("register.gui.blank"),
     REGISTER_PASSWORD("register.gui.password");

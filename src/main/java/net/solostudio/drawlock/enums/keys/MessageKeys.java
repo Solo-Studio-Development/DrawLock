@@ -11,7 +11,12 @@ import java.util.List;
 public enum MessageKeys {
     RELOAD("messages.reload"),
     HELP("messages.help"),
-    NO_PERMISSION("messages.no_permission");
+    NO_PERMISSION("messages.no_permission"),
+
+    SUCCESS_LOGIN("messages.success-login"),
+    SUCCESS_REGISTER("messages.success-register"),
+
+    WRONG_PASSWORD("messages.wrong-password");
 
     private final String path;
 

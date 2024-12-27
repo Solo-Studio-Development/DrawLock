@@ -3,9 +3,12 @@ package net.solostudio.drawlock.menu.menus;
 import net.solostudio.drawlock.DrawLock;
 import net.solostudio.drawlock.enums.keys.ConfigKeys;
 import net.solostudio.drawlock.enums.keys.ItemKeys;
+import net.solostudio.drawlock.enums.keys.MessageKeys;
 import net.solostudio.drawlock.managers.MenuController;
 import net.solostudio.drawlock.menu.Menu;
 import net.solostudio.drawlock.utils.AES256Utils;
+import net.solostudio.drawlock.utils.DrawLockUtils;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
@@ -63,7 +66,8 @@ public class MenuRegister extends Menu {
 
                 close();
                 DrawLock.getDatabase().savePasswordToDatabase(menuController.owner().getName(), Objects.requireNonNull(encryptedPassword));
-                menuController.owner().sendMessage(DrawLock.getDatabase().getPassword(menuController.owner().getName()));
+                menuController.owner().sendMessage(MessageKeys.SUCCESS_REGISTER.getMessage());
+                DrawLockUtils.playSuccessSound(menuController.owner(), "register.sounds");
             }
         }
     }

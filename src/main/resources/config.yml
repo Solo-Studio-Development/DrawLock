@@ -16,7 +16,7 @@ database:
   mysql:
     host: localhost
     port: 3306
-    database: coma112
+    database: user
     username: root
     password: "" # Enter your MySQL password here (leave empty for no password)
     ssl: false
@@ -64,10 +64,17 @@ login:
       amount: 1
       name: "&aPASSWORD"
       lore: []
+    error:
+      material: "RED_STAINED_GLASS_PANE"
+      amount: 1
+      name: "&cERROR"
+      lore: [ ]
   sounds:
     enabled: true
-    name:
+    success:
       - "BLOCK_NOTE_BLOCK_BELL"
+    denied:
+      - "BLOCK_NOTE_BLOCK_BIT"
 
 # ==============================================================
 # Register Settings
@@ -90,7 +97,7 @@ register:
       lore: []
   sounds:
     enabled: true
-    name:
+    success:
       - "BLOCK_NOTE_BLOCK_BELL"
 
 # ==============================================================
