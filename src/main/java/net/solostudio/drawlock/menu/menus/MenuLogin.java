@@ -9,7 +9,6 @@ import net.solostudio.drawlock.managers.MenuController;
 import net.solostudio.drawlock.menu.Menu;
 import net.solostudio.drawlock.utils.AES256Utils;
 import net.solostudio.drawlock.utils.DrawLockUtils;
-import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
@@ -77,12 +76,8 @@ public class MenuLogin extends Menu {
                     close();
                     menuController.owner().sendMessage(MessageKeys.SUCCESS_LOGIN.getMessage());
                     DrawLockUtils.playSuccessSound(menuController.owner(), "login.sounds");
-                } else {
-                    menuController.owner().sendMessage(MessageKeys.WRONG_PASSWORD.getMessage());
-                    setErrorItems();
-                    selectedSlots.clear();
-                    greenCount = 0;
-                }
+
+                } else setErrorItems();
             }
         }
     }
@@ -109,6 +104,10 @@ public class MenuLogin extends Menu {
 
         if (task != null) task.cancel();
 
+        menuController.owner().sendMessage(MessageKeys.WRONG_PASSWORD.getMessage());
+        selectedSlots.clear();
+        greenCount = 0;
+
         task = DrawLock.getInstance().getScheduler().runTaskTimer(() -> {
             if (currentFlash[0] >= totalFlashes) {
                 task.cancel();
@@ -116,10 +115,8 @@ public class MenuLogin extends Menu {
                 return;
             }
 
-            ItemStack itemToSet = (currentFlash[0] % 2 == 0) ? redPane : grayPane;
-
             IntStream.range(0, inventory.getSize()).forEach(index -> {
-                inventory.setItem(index, itemToSet);
+                inventory.setItem(index, (currentFlash[0] % 2 == 0) ? redPane : grayPane);
             });
 
             DrawLockUtils.playDeniedSound(menuController.owner(), "login.sounds");

@@ -43,7 +43,7 @@ encryption:
 # ==============================================================
 
 password:
-  min-length: 4
+  min-max-length: 4 # This is the required password length
 
 # ==============================================================
 # Login Settings
