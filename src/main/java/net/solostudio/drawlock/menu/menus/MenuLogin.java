@@ -9,6 +9,7 @@ import net.solostudio.drawlock.managers.MenuController;
 import net.solostudio.drawlock.menu.Menu;
 import net.solostudio.drawlock.utils.AES256Utils;
 import net.solostudio.drawlock.utils.DrawLockUtils;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
@@ -55,6 +56,7 @@ public class MenuLogin extends Menu {
 
         int slot = event.getSlot();
         ItemStack clickedItem = event.getCurrentItem();
+        Player player = menuController.owner();
 
         if (clickedItem != null && clickedItem.isSimilar(ItemKeys.LOGIN_BLANK.getItem())) {
             inventory.setItem(slot, ItemKeys.LOGIN_PASSWORD.getItem());
@@ -62,21 +64,18 @@ public class MenuLogin extends Menu {
             greenCount++;
 
             if (greenCount >= ConfigKeys.MINIMUM_PASSWORD_LENGTH.getInt()) {
-                String password = AES256Utils.encrypt(selectedSlots.stream()
+                String password = selectedSlots.stream()
                         .map(String::valueOf)
                         .reduce((s1, s2) -> s1 + ", " + s2)
-                        .orElse(""));
+                        .orElse("");
 
-                String storedPassword = DrawLock.getDatabase().getPassword(menuController.owner().getName());
+                String encryptedPassword = DrawLock.getDatabase().getPassword(menuController.owner().getName());
 
-                if (storedPassword.equals(selectedSlots.stream()
-                        .map(String::valueOf)
-                        .reduce((s1, s2) -> s1 + ", " + s2)
-                        .orElse(""))) {
+                if (encryptedPassword.equals(password)) {
                     close();
-                    menuController.owner().sendMessage(MessageKeys.SUCCESS_LOGIN.getMessage());
-                    DrawLockUtils.playSuccessSound(menuController.owner(), "login.sounds");
-
+                    player.sendMessage(MessageKeys.SUCCESS_LOGIN.getMessage());
+                    DrawLockUtils.playSuccessSound(player, "login.sounds");
+                    DrawLock.getDatabase().saveDate(player.getName(), "LAST_LOGIN");
                 } else setErrorItems();
             }
         }

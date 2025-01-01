@@ -28,10 +28,18 @@ database:
   # Provides configuration for the MySQL connection, including host, port, and other settings.
 
 # ==============================================================
+# Basic Settings
+# ==============================================================
+
+basic:
+  date-format: "yyyy. MM. dd | HH:mm" # This is the date format used for the creation date and last login date.
+  moving: false # If it's on false the player can't move while one of the menu is open.
+
+# ==============================================================
 # Important Encryption Settings (AES-256-GCM)
 # ==============================================================
 
-# Please do not show this to anyone else :) (To your Own and your Players safety)
+# Please do not show this to anyone else :) (For Your safety and that of Your Players)
 
 encryption:
   secret-key: "dzyQXlqZydzaYIQMvGlwEpQsXtyFpjfG" # Length ==> 256 = 32 | 192 = 24 | 128 = 16 -- CHANGE THIS! THIS IS AN EXAMPLE GO TO https://www.lastpass.com/features/password-generator TO CREATE UNIQUE ONE
@@ -43,7 +51,7 @@ encryption:
 # ==============================================================
 
 password:
-  min-length: 4
+  min-max-length: 4 # This is the required password length
 
 # ==============================================================
 # Login Settings

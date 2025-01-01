@@ -5,3 +5,6 @@ messages:
     - "&c/drawlock reload &f- &7Reloads the plugin."
     - ""
     - "&8&l━━━━━━━━━━━━━━━━━━━━[━━&c&lDRAWLOCK&8&l━━]━━━━━━━━━━━━━━━━━━━━"
+  success-login: "&c&lDRAWLOCK &8| &aSuccess Login!"
+  success-register: "&c&lDRAWLOCK &8| &aSuccess Register!"
+  wrong-password: "&c&lDRAWLOCK &8| &cWrong Password!"

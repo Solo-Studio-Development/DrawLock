@@ -10,14 +10,15 @@ public enum ConfigKeys {
     DATABASE("database.type"),
     LANGUAGE("language"),
 
+    BASIC_DATE_FORMAT("basic.date-format"),
+
     ENCRYPTION_SECRET_KEY("encryption.secret-key"),
-    ENCRYPTION_SALT("encryption.salt"),
     ENCRYPTION_IV("encryption.iv"),
 
     BEAUTIFIER_JOIN_MESSAGE("beautifier.join.message"),
     BEAUTIFIER_JOIN_MESSAGE_IS_ENABLED("beautifier.join.enabled"),
 
-    MINIMUM_PASSWORD_LENGTH("password.min-length"),
+    MINIMUM_PASSWORD_LENGTH("password.min-max-length"),
 
     LOGIN_NAME("login.gui.name"),
     LOGIN_SIZE("login.gui.size"),

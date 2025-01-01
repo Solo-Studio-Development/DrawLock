@@ -18,4 +18,6 @@ public abstract class AbstractDatabase {
     public abstract void savePasswordToDatabase(@NotNull String playerName, @NotNull String password);
 
     public abstract String getPassword(@NotNull String playerName);
+
+    public abstract void saveDate(@NotNull String playerName, @NotNull String column);
 }

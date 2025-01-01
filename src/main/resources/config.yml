@@ -16,7 +16,7 @@ database:
   mysql:
     host: localhost
     port: 3306
-    database: user
+    database: coma112
     username: root
     password: "" # Enter your MySQL password here (leave empty for no password)
     ssl: false
@@ -28,10 +28,17 @@ database:
   # Provides configuration for the MySQL connection, including host, port, and other settings.
 
 # ==============================================================
+# Basic Settings
+# ==============================================================
+
+basic:
+  date-format: "yyyy. MM. dd | HH:mm" # This is the date format used for the creation date and last login date.
+
+# ==============================================================
 # Important Encryption Settings (AES-256-GCM)
 # ==============================================================
 
-# Please do not show this to anyone else :) (To your Own and your Players safety)
+# Please do not show this to anyone else :) (For Your safety and that of Your Players)
 
 encryption:
   secret-key: "dzyQXlqZydzaYIQMvGlwEpQsXtyFpjfG" # Length ==> 256 = 32 | 192 = 24 | 128 = 16 -- CHANGE THIS! THIS IS AN EXAMPLE GO TO https://www.lastpass.com/features/password-generator TO CREATE UNIQUE ONE

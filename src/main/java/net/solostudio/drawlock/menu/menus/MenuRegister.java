@@ -51,6 +51,7 @@ public class MenuRegister extends Menu {
     public void handleMenu(final InventoryClickEvent event) {
         int slot = event.getSlot();
         ItemStack clickedItem = event.getCurrentItem();
+        Player player = menuController.owner();
 
         if (clickedItem != null && clickedItem.isSimilar(ItemKeys.REGISTER_BLANK.getItem())) {
             inventory.setItem(slot, ItemKeys.REGISTER_PASSWORD.getItem());
@@ -65,9 +66,11 @@ public class MenuRegister extends Menu {
                 String encryptedPassword = AES256Utils.encrypt(password);
 
                 close();
-                DrawLock.getDatabase().savePasswordToDatabase(menuController.owner().getName(), Objects.requireNonNull(encryptedPassword));
-                menuController.owner().sendMessage(MessageKeys.SUCCESS_REGISTER.getMessage());
-                DrawLockUtils.playSuccessSound(menuController.owner(), "register.sounds");
+                DrawLock.getDatabase().savePasswordToDatabase(player.getName(), Objects.requireNonNull(encryptedPassword));
+                DrawLock.getDatabase().saveDate(player.getName(), "CREATED_AT");
+                DrawLock.getDatabase().saveDate(player.getName(), "LAST_LOGIN");
+                player.sendMessage(MessageKeys.SUCCESS_REGISTER.getMessage());
+                DrawLockUtils.playSuccessSound(player, "register.sounds");
             }
         }
     }

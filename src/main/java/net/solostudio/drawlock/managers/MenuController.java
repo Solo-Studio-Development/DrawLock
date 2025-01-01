@@ -1,7 +1,5 @@
 package net.solostudio.drawlock.managers;
 
-import lombok.Getter;
-import net.solostudio.drawlock.DrawLock;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 

@@ -3,6 +3,7 @@ package net.solostudio.drawlock.database;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
+import net.solostudio.drawlock.enums.keys.ConfigKeys;
 import net.solostudio.drawlock.utils.AES256Utils;
 import net.solostudio.drawlock.utils.LoggerUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,6 +13,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 @Getter
@@ -159,5 +162,20 @@ public class MySQL extends AbstractDatabase {
         }
 
         return password != null ? AES256Utils.decrypt(password) : null;
+    }
+
+    @Override
+    public void saveDate(@NotNull String playerName, @NotNull String column) {
+        String query = "UPDATE drawlock SET " + column + " = ? WHERE PLAYER = ?";
+
+        String currentDateTime = new SimpleDateFormat(ConfigKeys.BASIC_DATE_FORMAT.getString()).format(new Date());
+
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, currentDateTime);
+            preparedStatement.setString(2, playerName);
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
     }
 }
