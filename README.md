@@ -51,6 +51,14 @@ implementation(files("libs/plugin.jar"))
 - `drawlock.changepassword`
 
 ---
+
+## 🔌 Placeholders
+
+- `%dl_last_login%` - Shows the date when you logged in last.
+- `%dl_created_at%` - Shows the date when you created your password.
+
+---
+
 ## 🤝 Contributing
 
 Contributions are always welcome! If you have ideas for improvements, feel free to join the Discord server and open a ticket. Let's build something awesome together!

@@ -10,7 +10,10 @@ public enum ItemKeys {
     LOGIN_ERROR("login.gui.error"),
 
     REGISTER_BLANK("register.gui.blank"),
-    REGISTER_PASSWORD("register.gui.password");
+    REGISTER_PASSWORD("register.gui.password"),
+
+    CHANGE_PASSWORD_BLANK("change-password.gui.blank"),
+    CHANGE_PASSWORD_PASSWORD("change-password.gui.password");
 
     private final String path;
 

@@ -178,4 +178,38 @@ public class MySQL extends AbstractDatabase {
             LoggerUtils.error(exception.getMessage());
         }
     }
+
+    @Override
+    public String getLastLogin(@NotNull String playerName) {
+        String query = "SELECT LAST_LOGIN FROM drawlock WHERE PLAYER = ?";
+
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, playerName);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) return resultSet.getString("LAST_LOGIN");
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+
+        return "";
+    }
+
+    @Override
+    public String getCreation(@NotNull String playerName) {
+        String query = "SELECT CREATED_AT FROM drawlock WHERE PLAYER = ?";
+
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, playerName);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) return resultSet.getString("CREATED_AT");
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+
+        return "";
+    }
 }

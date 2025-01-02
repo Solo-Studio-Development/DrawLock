@@ -15,6 +15,7 @@ public enum MessageKeys {
 
     SUCCESS_LOGIN("messages.success-login"),
     SUCCESS_REGISTER("messages.success-register"),
+    SUCCESS_CHANGE_PASSWORD("messages.success-change-password"),
 
     WRONG_PASSWORD("messages.wrong-password");
 

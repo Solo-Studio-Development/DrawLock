@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +27,12 @@ public class MenuLogin extends Menu {
     private final List<Integer> selectedSlots = new ArrayList<>();
     private MyScheduledTask task;
     private boolean locked;
+    private final Runnable onSuccess;
 
-    public MenuLogin(@NotNull MenuController menuController) {
+    public MenuLogin(@NotNull MenuController menuController, @Nullable Runnable onSuccess) {
         super(menuController);
         this.locked = false;
+        this.onSuccess = onSuccess;
     }
 
     @Override
@@ -76,6 +79,8 @@ public class MenuLogin extends Menu {
                     player.sendMessage(MessageKeys.SUCCESS_LOGIN.getMessage());
                     DrawLockUtils.playSuccessSound(player, "login.sounds");
                     DrawLock.getDatabase().saveDate(player.getName(), "LAST_LOGIN");
+
+                    if (onSuccess != null) onSuccess.run();
                 } else setErrorItems();
             }
         }

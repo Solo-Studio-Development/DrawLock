@@ -33,7 +33,6 @@ database:
 
 basic:
   date-format: "yyyy. MM. dd | HH:mm" # This is the date format used for the creation date and last login date.
-  moving: false # If it's on false the player can't move while one of the menu is open.
 
 # ==============================================================
 # Important Encryption Settings (AES-256-GCM)
@@ -66,12 +65,12 @@ login:
       material: "GRAY_STAINED_GLASS_PANE"
       amount: 1
       name: "&8BLANK"
-      lore: []
+      lore: [ ]
     password:
       material: "LIME_STAINED_GLASS_PANE"
       amount: 1
       name: "&aPASSWORD"
-      lore: []
+      lore: [ ]
     error:
       material: "RED_STAINED_GLASS_PANE"
       amount: 1
@@ -97,16 +96,42 @@ register:
       material: "GRAY_STAINED_GLASS_PANE"
       amount: 1
       name: "&8BLANK"
-      lore: []
+      lore: [ ]
     password:
       material: "LIME_STAINED_GLASS_PANE"
       amount: 1
       name: "&aPASSWORD"
-      lore: []
+      lore: [ ]
   sounds:
     enabled: true
     success:
       - "BLOCK_NOTE_BLOCK_BELL"
+
+# ==============================================================
+# Change Password Settings
+# ==============================================================
+
+change-password:
+  gui:
+    name: "&c&lCHANGE PASSWORD HERE"
+    size: 0
+    type: "DISPENSER" # If you want to use this set 0 to size! If you don't want to use this leave it blank. | https://jd.papermc.io/paper/1.21.4/org/bukkit/event/inventory/InventoryType.html
+    blank:
+      material: "GRAY_STAINED_GLASS_PANE"
+      amount: 1
+      name: "&8BLANK"
+      lore: [ ]
+    password:
+      material: "LIME_STAINED_GLASS_PANE"
+      amount: 1
+      name: "&aPASSWORD"
+      lore: [ ]
+  sounds:
+    enabled: true
+    success:
+      - "BLOCK_NOTE_BLOCK_BELL"
+    denied:
+      - "BLOCK_NOTE_BLOCK_BIT"
 
 # ==============================================================
 # Beautifier settings

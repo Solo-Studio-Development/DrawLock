@@ -9,6 +9,7 @@ import net.solostudio.drawlock.database.MySQL;
 import net.solostudio.drawlock.enums.DatabaseTypes;
 import net.solostudio.drawlock.enums.LanguageTypes;
 import net.solostudio.drawlock.enums.keys.ConfigKeys;
+import net.solostudio.drawlock.hooks.PlaceholderAPI;
 import net.solostudio.drawlock.language.Language;
 import net.solostudio.drawlock.utils.LoggerUtils;
 import org.bstats.bukkit.Metrics;
@@ -18,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.Objects;
 
+import static net.solostudio.drawlock.hooks.PlaceholderAPI.registerHook;
 import static net.solostudio.drawlock.utils.StartingUtils.initialize;
 import static net.solostudio.drawlock.utils.StartingUtils.saveResourceIfNotExists;
 
@@ -48,11 +50,12 @@ public final class DrawLock extends ZapperJavaPlugin {
         }
 
         new Metrics(this, 24209);
+        registerHook();
     }
 
     @Override
     public void onDisable() {
-        // database off
+        if (database != null) database.disconnect();
     }
 
     public Config getConfiguration() {

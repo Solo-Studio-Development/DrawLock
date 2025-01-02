@@ -3,6 +3,8 @@ package net.solostudio.drawlock.commands;
 import net.solostudio.drawlock.DrawLock;
 import net.solostudio.drawlock.enums.keys.MessageKeys;
 import net.solostudio.drawlock.managers.MenuController;
+import net.solostudio.drawlock.menu.menus.MenuChangePassword;
+import net.solostudio.drawlock.menu.menus.MenuLogin;
 import net.solostudio.drawlock.menu.menus.MenuRegister;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -34,7 +36,14 @@ public class CommandDrawLock {
     @Subcommand("changepassword")
     @Description("Changes the password")
     @CommandPermission("drawlock.changepassword")
-    public void changePassword(@NotNull CommandSender sender) {
-        new MenuRegister(MenuController.getMenuUtils((Player) sender)).open();
+    public void changePassword(@NotNull Player player) {
+        MenuController menuController = MenuController.getMenuUtils(player);
+
+        MenuLogin menuLogin = new MenuLogin(menuController, () -> {
+            MenuChangePassword menuChangePassword = new MenuChangePassword(menuController);
+            menuChangePassword.open();
+        });
+
+        menuLogin.open();
     }
 }

@@ -20,7 +20,7 @@ public class JoinListener implements Listener {
 
         DrawLock.getDatabase().createPlayer(player.getName());
 
-        if (DrawLock.getDatabase().isRegistered(player.getName())) new MenuLogin(MenuController.getMenuUtils(player)).open();
+        if (DrawLock.getDatabase().isRegistered(player.getName())) new MenuLogin(MenuController.getMenuUtils(player), null).open();
         else new MenuRegister(MenuController.getMenuUtils(player)).open();
 
         if (!ConfigKeys.BEAUTIFIER_JOIN_MESSAGE_IS_ENABLED.getBoolean()) return;

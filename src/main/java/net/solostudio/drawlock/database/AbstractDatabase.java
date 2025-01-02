@@ -20,4 +20,8 @@ public abstract class AbstractDatabase {
     public abstract String getPassword(@NotNull String playerName);
 
     public abstract void saveDate(@NotNull String playerName, @NotNull String column);
+
+    public abstract String getLastLogin(@NotNull String playerName);
+
+    public abstract String getCreation(@NotNull String playerName);
 }

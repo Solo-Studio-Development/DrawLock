@@ -24,6 +24,10 @@ public enum ConfigKeys {
     LOGIN_SIZE("login.gui.size"),
     LOGIN_TYPE("login.gui.type"),
 
+    CHANGE_PASSWORD_NAME("change-password.gui.name"),
+    CHANGE_PASSWORD_SIZE("change-password.gui.size"),
+    CHANGE_PASSWORD_TYPE("change-password.gui.type"),
+
     REGISTER_NAME("register.gui.name"),
     REGISTER_SIZE("register.gui.size"),
     REGISTER_TYPE("register.gui.type");
