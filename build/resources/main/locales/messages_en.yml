@@ -7,4 +7,5 @@ messages:
     - "&8&l━━━━━━━━━━━━━━━━━━━━[━━&c&lDRAWLOCK&8&l━━]━━━━━━━━━━━━━━━━━━━━"
   success-login: "&c&lDRAWLOCK &8| &aSuccess Login!"
   success-register: "&c&lDRAWLOCK &8| &aSuccess Register!"
+  success-change-password: "&c&lDRAWLOCK &8| &aSuccess Password Change!"
   wrong-password: "&c&lDRAWLOCK &8| &cWrong Password!"

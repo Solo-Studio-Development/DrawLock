@@ -41,6 +41,7 @@ public final class DrawLock extends ZapperJavaPlugin {
         saveDefaultConfig();
         initializeComponents();
         initializeDatabaseManager();
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord"); // TODO this!!
         // updates - later
 
         try {
@@ -55,6 +56,8 @@ public final class DrawLock extends ZapperJavaPlugin {
 
     @Override
     public void onDisable() {
+        getServer().getMessenger().unregisterOutgoingPluginChannel(this);
+
         if (database != null) database.disconnect();
     }
 

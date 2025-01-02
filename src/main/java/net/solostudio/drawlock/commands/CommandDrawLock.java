@@ -24,8 +24,8 @@ public class CommandDrawLock {
                 .forEach(sender::sendMessage);
     }
 
-    @Subcommand("help")
-    @Description("Reloads the plugin")
+    @Subcommand("reload")
+    @Description("Reloads the plugin.")
     @CommandPermission("drawlock.reload")
     public void reload(@NotNull CommandSender sender) {
         DrawLock.getInstance().getLanguage().reload();
@@ -34,14 +34,13 @@ public class CommandDrawLock {
     }
 
     @Subcommand("changepassword")
-    @Description("Changes the password")
+    @Description("Changes the password.")
     @CommandPermission("drawlock.changepassword")
     public void changePassword(@NotNull Player player) {
         MenuController menuController = MenuController.getMenuUtils(player);
 
         MenuLogin menuLogin = new MenuLogin(menuController, () -> {
-            MenuChangePassword menuChangePassword = new MenuChangePassword(menuController);
-            menuChangePassword.open();
+            new MenuChangePassword(menuController).open();
         });
 
         menuLogin.open();

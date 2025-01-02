@@ -1,13 +1,13 @@
-# ==============================================================
-# Language Configuration Section
-# ==============================================================
+# ============================================================== #
+# Language Configuration Section                                 #
+# ============================================================== #
 
 language: "en" # Supported languages -> de, en
 # If you want to change the language of your plugin, choose from the available options: 'de' (German) or 'en' (English)
 
-# ==============================================================
-# Database Configuration
-# ==============================================================
+# ============================================================== #
+# Database Configuration                                         #
+# ============================================================== #
 
 database:
   type: mysql # Supported types -> MYSQL, H2
@@ -27,16 +27,16 @@ database:
   # This section is only necessary for MySQL. If using H2, you can ignore this part.
   # Provides configuration for the MySQL connection, including host, port, and other settings.
 
-# ==============================================================
-# Basic Settings
-# ==============================================================
+# ============================================================== #
+# Basic Settings                                                 #
+# ============================================================== #
 
 basic:
   date-format: "yyyy. MM. dd | HH:mm" # This is the date format used for the creation date and last login date.
 
-# ==============================================================
-# Important Encryption Settings (AES-256-GCM)
-# ==============================================================
+# ============================================================== #
+# Important Encryption Settings (AES-256-GCM)                    #
+# ============================================================== #
 
 # Please do not show this to anyone else :) (For Your safety and that of Your Players)
 
@@ -45,22 +45,24 @@ encryption:
   salt: "xYCOUaSrOMkiQrcisPdXTxjIDNLCPnbp" # A random value which is added at the beginning of the encrypted text. -- CHANGE THIS! THIS IS AN EXAMPLE GO TO https://www.lastpass.com/features/password-generator TO CREATE UNIQUE ONE
   iv: "YWaUYyQMheDe" # Must be 12 characters long! -- CHANGE THIS! THIS IS AN EXAMPLE GO TO https://www.lastpass.com/features/password-generator TO CREATE UNIQUE ONE
 
-# ==============================================================
-# Password Setting
-# ==============================================================
+# ============================================================== #
+# Password Setting                                               #
+# ============================================================== #
 
 password:
   min-max-length: 4 # This is the required password length
+  max-attempts: 3 # If the player reaches the number the "password.attempt-command" will run!
+  attempt-command: "kick {player} You don't know your own password? >.<"
+  menu-size: 0
+  menu-type: "DISPENSER" # If you want to use this set 0 to size! If you don't want to use this leave it blank. | https://jd.papermc.io/paper/1.21.4/org/bukkit/event/inventory/InventoryType.html
 
-# ==============================================================
-# Login Settings
-# ==============================================================
+# ============================================================== #
+# Login Settings                                                 #
+# ============================================================== #
 
 login:
   gui:
     name: "&c&lLOGIN HERE"
-    size: 0
-    type: "DISPENSER" # If you want to use this set 0 to size! If you don't want to use this leave it blank. | https://jd.papermc.io/paper/1.21.4/org/bukkit/event/inventory/InventoryType.html
     blank:
       material: "GRAY_STAINED_GLASS_PANE"
       amount: 1
@@ -83,15 +85,13 @@ login:
     denied:
       - "BLOCK_NOTE_BLOCK_BIT"
 
-# ==============================================================
-# Register Settings
-# ==============================================================
+# ============================================================== #
+# Register Settings                                              #
+# ============================================================== #
 
 register:
   gui:
     name: "&c&lREGISTER HERE"
-    size: 0
-    type: "DISPENSER" # If you want to use this set 0 to size! If you don't want to use this leave it blank. | https://jd.papermc.io/paper/1.21.4/org/bukkit/event/inventory/InventoryType.html
     blank:
       material: "GRAY_STAINED_GLASS_PANE"
       amount: 1
@@ -107,15 +107,13 @@ register:
     success:
       - "BLOCK_NOTE_BLOCK_BELL"
 
-# ==============================================================
-# Change Password Settings
-# ==============================================================
+# ============================================================== #
+# Change Password Settings                                       #
+# ============================================================== #
 
 change-password:
   gui:
     name: "&c&lCHANGE PASSWORD HERE"
-    size: 0
-    type: "DISPENSER" # If you want to use this set 0 to size! If you don't want to use this leave it blank. | https://jd.papermc.io/paper/1.21.4/org/bukkit/event/inventory/InventoryType.html
     blank:
       material: "GRAY_STAINED_GLASS_PANE"
       amount: 1
@@ -133,13 +131,17 @@ change-password:
     denied:
       - "BLOCK_NOTE_BLOCK_BIT"
 
-# ==============================================================
-# Beautifier settings
-# ==============================================================
+# ============================================================== #
+# Beautifier settings                                            #
+# ============================================================== #
 
 beautifier:
   join:
     enabled: true
     message:
       - ""
-      - "&aHello {player}!"
+      - "&aHello &f&l{player}!"
+    sounds:
+      enabled: true
+      name:
+        - "UI_HUD_BUBBLE_POP"

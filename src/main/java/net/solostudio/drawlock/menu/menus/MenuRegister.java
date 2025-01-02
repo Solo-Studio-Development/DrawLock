@@ -17,11 +17,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@SuppressWarnings("all")
 public class MenuRegister extends Menu {
-    private static final String type = ConfigKeys.REGISTER_TYPE.getString();
+    private static final int MINIMUM_PASSWORD_LENGTH = ConfigKeys.MINIMUM_PASSWORD_LENGTH.getInt();
     private int greenCount = 0;
     private final List<Integer> selectedSlots = new ArrayList<>();
 
@@ -35,51 +35,39 @@ public class MenuRegister extends Menu {
     }
 
     @Override
-    public String getType() {
-        return type;
-    }
-
-    @Override
-    public int getSlots() {
-        int size = ConfigKeys.REGISTER_SIZE.getInt();
-
-        if (size == 0 && !type.isEmpty()) return 0;
-        else return size;
-    }
-
-    @Override
     public void handleMenu(final InventoryClickEvent event) {
-        int slot = event.getSlot();
-        ItemStack clickedItem = event.getCurrentItem();
-        Player player = menuController.owner();
+        var slot = event.getSlot();
+        var clickedItem = event.getCurrentItem();
+        var player = menuController.owner();
 
         if (clickedItem != null && clickedItem.isSimilar(ItemKeys.REGISTER_BLANK.getItem())) {
             inventory.setItem(slot, ItemKeys.REGISTER_PASSWORD.getItem());
             selectedSlots.add(slot);
             greenCount++;
 
-            if (greenCount >= ConfigKeys.MINIMUM_PASSWORD_LENGTH.getInt()) {
-                String password = selectedSlots.stream()
-                        .map(String::valueOf)
-                        .reduce((s1, s2) -> s1 + ", " + s2)
-                        .orElse("");
-                String encryptedPassword = AES256Utils.encrypt(password);
-
-                close();
-                DrawLock.getDatabase().savePasswordToDatabase(player.getName(), Objects.requireNonNull(encryptedPassword));
-                DrawLock.getDatabase().saveDate(player.getName(), "CREATED_AT");
-                DrawLock.getDatabase().saveDate(player.getName(), "LAST_LOGIN");
-                player.sendMessage(MessageKeys.SUCCESS_REGISTER.getMessage());
-                DrawLockUtils.playSuccessSound(player, "register.sounds");
-            }
+            if (greenCount >= MINIMUM_PASSWORD_LENGTH) processPasswordRegistration(player);
         }
+    }
+
+    private void processPasswordRegistration(@NotNull Player player) {
+        String password = selectedSlots.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(", "));
+        String encryptedPassword = AES256Utils.encrypt(password);
+
+        close();
+        DrawLock.getDatabase().savePasswordToDatabase(player.getName(), Objects.requireNonNull(encryptedPassword));
+        DrawLock.getDatabase().saveDate(player.getName(), "CREATED_AT");
+        DrawLock.getDatabase().saveDate(player.getName(), "LAST_LOGIN");
+        player.sendMessage(MessageKeys.SUCCESS_REGISTER.getMessage());
+        DrawLockUtils.playSound(player, "register.sounds", ".success");
     }
 
     @Override
     public void setMenuItems() {
-        IntStream.range(0, inventory.getSize()).forEach(index -> {
-            if (inventory.getItem(index) == null) inventory.setItem(index, ItemKeys.REGISTER_BLANK.getItem());
-        });
+        IntStream.range(0, inventory.getSize())
+                .filter(index -> inventory.getItem(index) == null)
+                .forEach(index -> inventory.setItem(index, ItemKeys.REGISTER_BLANK.getItem()));
     }
 
     @Override

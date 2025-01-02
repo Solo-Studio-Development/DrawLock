@@ -19,11 +19,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
-@SuppressWarnings("all")
 public class MenuChangePassword extends Menu {
-    private static final String type = ConfigKeys.CHANGE_PASSWORD_TYPE.getString();
-    private int greenCount = 0;
+    private final int minPasswordLength = ConfigKeys.MINIMUM_PASSWORD_LENGTH.getInt();
     private final List<Integer> selectedSlots = new ArrayList<>();
+    private int greenCount = 0;
 
     public MenuChangePassword(@NotNull MenuController menuController) {
         super(menuController);
@@ -35,49 +34,40 @@ public class MenuChangePassword extends Menu {
     }
 
     @Override
-    public String getType() {
-        return type;
-    }
-
-    @Override
-    public int getSlots() {
-        int size = ConfigKeys.CHANGE_PASSWORD_SIZE.getInt();
-
-        if (size == 0 && !type.isEmpty()) return 0;
-        else return size;
-    }
-
-    @Override
     public void handleMenu(final InventoryClickEvent event) {
-        int slot = event.getSlot();
-        ItemStack clickedItem = event.getCurrentItem();
-        Player player = menuController.owner();
+        var slot = event.getSlot();
+        var clickedItem = event.getCurrentItem();
+        var player = menuController.owner();
 
         if (clickedItem != null && clickedItem.isSimilar(ItemKeys.CHANGE_PASSWORD_BLANK.getItem())) {
             inventory.setItem(slot, ItemKeys.CHANGE_PASSWORD_PASSWORD.getItem());
             selectedSlots.add(slot);
             greenCount++;
 
-            if (greenCount >= ConfigKeys.MINIMUM_PASSWORD_LENGTH.getInt()) {
-                String password = selectedSlots.stream()
-                        .map(String::valueOf)
-                        .reduce((s1, s2) -> s1 + ", " + s2)
-                        .orElse("");
-                String encryptedPassword = AES256Utils.encrypt(password);
-
-                close();
-                DrawLock.getDatabase().savePasswordToDatabase(player.getName(), Objects.requireNonNull(encryptedPassword));
-                player.sendMessage(MessageKeys.SUCCESS_CHANGE_PASSWORD.getMessage());
-                DrawLockUtils.playSuccessSound(player, "change-password.sounds");
-            }
+            if (greenCount >= minPasswordLength) changePassword(player);
         }
+    }
+
+    private void changePassword(@NotNull Player player) {
+        String password = selectedSlots.stream()
+                .map(String::valueOf)
+                .reduce((s1, s2) -> s1 + ", " + s2)
+                .orElse("");
+
+        String encryptedPassword = AES256Utils.encrypt(password);
+
+
+        close();
+        DrawLock.getDatabase().savePasswordToDatabase(player.getName(), Objects.requireNonNull(encryptedPassword));
+        player.sendMessage(MessageKeys.SUCCESS_CHANGE_PASSWORD.getMessage());
+        DrawLockUtils.playSound(player, "change-password.sounds", ".success");
     }
 
     @Override
     public void setMenuItems() {
-        IntStream.range(0, inventory.getSize()).forEach(index -> {
-            if (inventory.getItem(index) == null) inventory.setItem(index, ItemKeys.CHANGE_PASSWORD_BLANK.getItem());
-        });
+        IntStream.range(0, inventory.getSize())
+                .filter(index -> inventory.getItem(index) == null)
+                .forEach(index -> inventory.setItem(index, ItemKeys.CHANGE_PASSWORD_BLANK.getItem()));
     }
 
     @Override

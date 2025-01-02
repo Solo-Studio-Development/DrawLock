@@ -6,3 +6,5 @@ authors: [ Solo Studio ]
 description: 🔒 "Secure your gameplay with a swipe—draw your way to safety!"
 website: https://discord.gg/CxawDwDZtd
 folia-supported: true
+softdepend: [PlaceholderAPI]
+loadbefore: [PlaceholderAPI]

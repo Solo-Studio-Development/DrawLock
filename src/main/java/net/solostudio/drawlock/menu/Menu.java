@@ -1,6 +1,8 @@
 package net.solostudio.drawlock.menu;
 
+import lombok.Getter;
 import net.solostudio.drawlock.DrawLock;
+import net.solostudio.drawlock.enums.keys.ConfigKeys;
 import net.solostudio.drawlock.managers.MenuController;
 import net.solostudio.drawlock.processor.MessageProcessor;
 import org.bukkit.Bukkit;
@@ -24,8 +26,9 @@ public abstract class Menu implements InventoryHolder {
     public abstract void handleMenu(final InventoryClickEvent event);
     public abstract void setMenuItems();
     public abstract String getMenuName();
-    public abstract int getSlots();
-    public abstract String getType();
+
+    @Getter protected int size = ConfigKeys.MENU_SIZE.getInt();
+    @Getter protected String type = ConfigKeys.MENU_TYPE.getString();
 
     @Override
     public @NotNull Inventory getInventory() {
@@ -34,11 +37,9 @@ public abstract class Menu implements InventoryHolder {
 
     public void open() {
         canClose = false;
-        String type = getType();
-        int slots = getSlots();
 
-        if (slots == 0 && !getType().isEmpty()) inventory = Bukkit.createInventory(this, InventoryType.valueOf(type), MessageProcessor.process(getMenuName()));
-        else inventory = Bukkit.createInventory(this, slots, MessageProcessor.process(getMenuName()));
+        if (getSize() == 0 && !getType().isEmpty()) inventory = Bukkit.createInventory(this, InventoryType.valueOf(getType()), MessageProcessor.process(getMenuName()));
+        else inventory = Bukkit.createInventory(this, getSize(), MessageProcessor.process(getMenuName()));
 
         this.setMenuItems();
         menuController.owner().openInventory(inventory);

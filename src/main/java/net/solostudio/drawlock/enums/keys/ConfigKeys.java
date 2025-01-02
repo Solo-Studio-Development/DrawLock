@@ -20,17 +20,17 @@ public enum ConfigKeys {
 
     MINIMUM_PASSWORD_LENGTH("password.min-max-length"),
 
+    MAX_ATTEMPTS("password.max-attempts"),
+    ATTEMPT_COMMAND("password.attempt-command"),
+
+    MENU_TYPE("password.menu-type"),
+    MENU_SIZE("password.menu-size"),
+
     LOGIN_NAME("login.gui.name"),
-    LOGIN_SIZE("login.gui.size"),
-    LOGIN_TYPE("login.gui.type"),
 
     CHANGE_PASSWORD_NAME("change-password.gui.name"),
-    CHANGE_PASSWORD_SIZE("change-password.gui.size"),
-    CHANGE_PASSWORD_TYPE("change-password.gui.type"),
 
-    REGISTER_NAME("register.gui.name"),
-    REGISTER_SIZE("register.gui.size"),
-    REGISTER_TYPE("register.gui.type");
+    REGISTER_NAME("register.gui.name");
 
     private final String path;
 
