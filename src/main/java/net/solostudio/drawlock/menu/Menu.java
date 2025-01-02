@@ -4,7 +4,12 @@ import lombok.Getter;
 import net.solostudio.drawlock.DrawLock;
 import net.solostudio.drawlock.enums.keys.ConfigKeys;
 import net.solostudio.drawlock.managers.MenuController;
+import net.solostudio.drawlock.menu.menus.MenuChangePassword;
+import net.solostudio.drawlock.menu.menus.MenuLogin;
+import net.solostudio.drawlock.menu.menus.MenuRegister;
 import net.solostudio.drawlock.processor.MessageProcessor;
+import net.solostudio.drawlock.utils.BossBarUtils;
+import net.solostudio.drawlock.utils.LoggerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -41,13 +46,25 @@ public abstract class Menu implements InventoryHolder {
         if (getSize() == 0 && !getType().isEmpty()) inventory = Bukkit.createInventory(this, InventoryType.valueOf(getType()), MessageProcessor.process(getMenuName()));
         else inventory = Bukkit.createInventory(this, getSize(), MessageProcessor.process(getMenuName()));
 
+        switch (this) {
+            case MenuLogin ignored -> BossBarUtils.createBossBar(menuController.owner(), "login.bossbar");
+            case MenuRegister ignored -> BossBarUtils.createBossBar(menuController.owner(), "register.bossbar");
+            case MenuChangePassword ignored -> {}
+
+            default -> LoggerUtils.error("Bossbar Error");
+        }
+
         this.setMenuItems();
+        menuController.setCurrentMenu(this);
         menuController.owner().openInventory(inventory);
     }
 
     public void close() {
         canClose = true;
+        menuController.setCurrentMenu(null);
         menuController.owner().closeInventory();
+
+        BossBarUtils.removeBossBar(menuController.owner());
 
         inventory = null;
     }
@@ -62,7 +79,4 @@ public abstract class Menu implements InventoryHolder {
             }
         }
     }
-
-
-
 }

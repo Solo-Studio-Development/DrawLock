@@ -61,6 +61,16 @@ password:
 # ============================================================== #
 
 login:
+  bossbar:
+    enabled: true
+    title: "&cYou have &f{time} &cseconds left to login!"
+    color: "RED"
+    style: "SOLID"
+    flags:
+      - "CREATE_FOG"
+    time: 50
+    commands:
+      - "kick {player} No more seconds left!"
   gui:
     name: "&c&lLOGIN HERE"
     blank:
@@ -90,6 +100,16 @@ login:
 # ============================================================== #
 
 register:
+  bossbar:
+    enabled: true
+    title: "&cYou have &f{time} &cseconds left to register!"
+    color: "RED"
+    style: "SOLID"
+    flags:
+      - "CREATE_FOG"
+    time: 50
+    commands:
+      - "kick {player} No more seconds left!"
   gui:
     name: "&c&lREGISTER HERE"
     blank:

@@ -2,10 +2,12 @@ package net.solostudio.drawlock.listeners;
 
 import net.solostudio.drawlock.menu.Menu;
 import net.solostudio.drawlock.menu.menus.MenuLogin;
+import net.solostudio.drawlock.utils.BossBarUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class QuitListener implements Listener {
     @EventHandler
@@ -15,5 +17,13 @@ public class QuitListener implements Listener {
         menu.handleInventoryClose(event);
 
         if (event.getPlayer() instanceof Player player && player.isOnline()) MenuLogin.ATTEMPTS.remove(player);
+    }
+
+    @EventHandler
+    public void onQuit(final PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+
+        MenuLogin.ATTEMPTS.remove(player);
+        BossBarUtils.removeBossBar(player);
     }
 }

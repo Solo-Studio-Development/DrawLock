@@ -23,7 +23,7 @@ public class DrawLockUtils {
                 .forEach(sound -> player.playSound(player, sound, 1.0f, 1.0f));
     }
 
-    public void send(@NotNull Player player, @NotNull String server) {
+    public void sendToServer(@NotNull Player player, @NotNull String server) {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(player.getName());

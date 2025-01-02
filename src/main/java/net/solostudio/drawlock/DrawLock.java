@@ -5,6 +5,7 @@ import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskSchedule
 import lombok.Getter;
 import net.solostudio.drawlock.config.Config;
 import net.solostudio.drawlock.database.AbstractDatabase;
+import net.solostudio.drawlock.database.H2;
 import net.solostudio.drawlock.database.MySQL;
 import net.solostudio.drawlock.enums.DatabaseTypes;
 import net.solostudio.drawlock.enums.LanguageTypes;
@@ -86,17 +87,17 @@ public final class DrawLock extends ZapperJavaPlugin {
                     mySQL.createTable();
                     LoggerUtils.info("### MySQL database has been successfully initialized! ###");
                 }
-                //case H2 -> {
-                //    LoggerUtils.info("### H2 support found! Starting to initializing it... ###");
-                //    database = new H2();
-                //    H2 h2 = (H2) database;
-//
-                //    h2.createTable();
-                //    LoggerUtils.info("### H2 database has been successfully initialized! ###");
-                //}
+                case H2 -> {
+                    LoggerUtils.info("### H2 support found! Starting to initializing it... ###");
+                    database = new H2();
+                    H2 h2 = (H2) database;
+
+                    h2.createTable();
+                    LoggerUtils.info("### H2 database has been successfully initialized! ###");
+                }
                 default -> throw new SQLException("Unsupported database type!");
             }
-        } catch (SQLException exception) {
+        } catch (SQLException | ClassNotFoundException exception) {
             LoggerUtils.error("Database initialization failed: {}", exception.getMessage());
         }
     }
