@@ -61,6 +61,7 @@ public class MenuRegister extends Menu {
         DrawLock.getDatabase().saveDate(player.getName(), "LAST_LOGIN");
         player.sendMessage(MessageKeys.SUCCESS_REGISTER.getMessage());
         DrawLockUtils.playSound(player, "register.sounds", ".success");
+        DrawLockUtils.sendToServer(menuController.owner(), "register.server");
     }
 
     @Override

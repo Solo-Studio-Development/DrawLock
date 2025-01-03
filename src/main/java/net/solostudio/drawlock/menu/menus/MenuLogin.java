@@ -7,7 +7,6 @@ import net.solostudio.drawlock.enums.keys.ItemKeys;
 import net.solostudio.drawlock.enums.keys.MessageKeys;
 import net.solostudio.drawlock.managers.MenuController;
 import net.solostudio.drawlock.menu.Menu;
-import net.solostudio.drawlock.utils.AES256Utils;
 import net.solostudio.drawlock.utils.DrawLockUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -61,6 +60,8 @@ public class MenuLogin extends Menu {
 
             if (greenCount >= ConfigKeys.MINIMUM_PASSWORD_LENGTH.getInt()) validatePassword();
         }
+
+        if (event.isShiftClick()) reset();
     }
 
     private void validatePassword() {
@@ -80,6 +81,7 @@ public class MenuLogin extends Menu {
         player.sendMessage(MessageKeys.SUCCESS_LOGIN.getMessage());
         DrawLockUtils.playSound(player, "login.sounds", ".success");
         DrawLock.getDatabase().saveDate(player.getName(), "LAST_LOGIN");
+        DrawLockUtils.sendToServer(menuController.owner(), "login.server");
 
         if (onSuccess != null) onSuccess.run();
     }
@@ -138,5 +140,13 @@ public class MenuLogin extends Menu {
                 locked = false;
             }
         }, 0, 5);
+    }
+
+    private void reset() {
+        IntStream.range(0, inventory.getSize())
+                .forEach(index -> inventory.setItem(index, ItemKeys.LOGIN_BLANK.getItem()));
+
+        greenCount = 0;
+        selectedSlots.clear();
     }
 }

@@ -10,13 +10,13 @@ language: "en" # Supported languages -> de, en
 # ============================================================== #
 
 database:
-  type: mysql # Supported types -> MYSQL, H2
+  type: h2 # Supported types -> MYSQL, H2
 
   # MySQL-specific configuration
   mysql:
     host: localhost
     port: 3306
-    database: coma112
+    database: user
     username: root
     password: "" # Enter your MySQL password here (leave empty for no password)
     ssl: false

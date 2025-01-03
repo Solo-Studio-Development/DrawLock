@@ -10,13 +10,13 @@ language: "en" # Supported languages -> de, en
 # ============================================================== #
 
 database:
-  type: mysql # Supported types -> MYSQL, H2
+  type: h2 # Supported types -> MYSQL, H2
 
   # MySQL-specific configuration
   mysql:
     host: localhost
     port: 3306
-    database: coma112
+    database: user
     username: root
     password: "" # Enter your MySQL password here (leave empty for no password)
     ssl: false
@@ -76,17 +76,17 @@ login:
     blank:
       material: "GRAY_STAINED_GLASS_PANE"
       amount: 1
-      name: "&8BLANK"
+      name: "&8&lBLANK"
       lore: [ ]
     password:
       material: "LIME_STAINED_GLASS_PANE"
       amount: 1
-      name: "&aPASSWORD"
+      name: "&a&lPASSWORD"
       lore: [ ]
     error:
       material: "RED_STAINED_GLASS_PANE"
       amount: 1
-      name: "&cERROR"
+      name: "&c&lERROR"
       lore: [ ]
   sounds:
     enabled: true
@@ -94,6 +94,10 @@ login:
       - "BLOCK_NOTE_BLOCK_BELL"
     denied:
       - "BLOCK_NOTE_BLOCK_BIT"
+  server:
+    enabled: false
+    where: "hub"
+
 
 # ============================================================== #
 # Register Settings                                              #
@@ -115,17 +119,20 @@ register:
     blank:
       material: "GRAY_STAINED_GLASS_PANE"
       amount: 1
-      name: "&8BLANK"
+      name: "&8&lBLANK"
       lore: [ ]
     password:
       material: "LIME_STAINED_GLASS_PANE"
       amount: 1
-      name: "&aPASSWORD"
+      name: "&a&lPASSWORD"
       lore: [ ]
   sounds:
     enabled: true
     success:
       - "BLOCK_NOTE_BLOCK_BELL"
+  server:
+    enabled: false
+    where: "hub"
 
 # ============================================================== #
 # Change Password Settings                                       #
@@ -137,12 +144,12 @@ change-password:
     blank:
       material: "GRAY_STAINED_GLASS_PANE"
       amount: 1
-      name: "&8BLANK"
+      name: "&8&lBLANK"
       lore: [ ]
     password:
       material: "LIME_STAINED_GLASS_PANE"
       amount: 1
-      name: "&aPASSWORD"
+      name: "&a&lPASSWORD"
       lore: [ ]
   sounds:
     enabled: true

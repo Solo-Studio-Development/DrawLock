@@ -56,7 +56,7 @@ public class H2 extends AbstractDatabase {
 
     @Override
     public void createTable() {
-        String drawLockTableQuery = "CREATE TABLE IF NOT EXISTS drawlock (PLAYER VARCHAR(255) NOT NULL, PASSWORD VARCHAR(65535) NOT NULL, CREATED_AT VARCHAR(255), LAST_LOGIN VARCHAR(255), PRIMARY KEY (PLAYER))";
+        String drawLockTableQuery = "CREATE TABLE IF NOT EXISTS drawlock (PLAYER VARCHAR(255) NOT NULL, PASSWORD VARCHAR(65535) NOT NULL DEFAULT '', CREATED_AT VARCHAR(255), LAST_LOGIN VARCHAR(255), PRIMARY KEY (PLAYER))";
 
         try (PreparedStatement drawLockTableStatement = getConnection().prepareStatement(drawLockTableQuery)) {
             drawLockTableStatement.execute();
@@ -67,7 +67,7 @@ public class H2 extends AbstractDatabase {
 
     @Override
     public void createPlayer(@NotNull String playerName) {
-        String query = "INSERT IGNORE INTO drawlock (PLAYER) VALUES (?)";
+        String query = "INSERT IGNORE INTO drawlock (PLAYER, PASSWORD) VALUES (?, '')";
 
         try {
             if (!exists(playerName)) {
