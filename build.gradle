@@ -29,6 +29,7 @@ dependencies {
     zap("com.github.Anon8281:UniversalScheduler:0.1.6")
     zap("com.h2database:h2:2.3.232")
     zap("com.zaxxer:HikariCP:6.2.1")
+    zap("fr.mrmicky:fastboard:2.1.3")
 
     compileOnly("org.projectlombok:lombok:1.18.36")
     compileOnly("me.clip:placeholderapi:2.11.6")
@@ -55,6 +56,7 @@ zapper {
     relocate("org.bstats", "bstats")
     relocate("org.h2", "h2")
     relocate("com.github.Anon8281.universalScheduler", "universalScheduler")
+    relocate("fr.mrmicky.fastboard", "fastboard")
 }
 
 shadowJar {

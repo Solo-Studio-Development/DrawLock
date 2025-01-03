@@ -6,6 +6,7 @@ import net.solostudio.drawlock.managers.MenuController;
 import net.solostudio.drawlock.menu.Menu;
 import net.solostudio.drawlock.menu.menus.MenuLogin;
 import net.solostudio.drawlock.menu.menus.MenuRegister;
+import net.solostudio.drawlock.services.ScoreboardService;
 import net.solostudio.drawlock.utils.DrawLockUtils;
 import net.solostudio.drawlock.utils.LoggerUtils;
 import org.bukkit.entity.Player;
@@ -21,8 +22,13 @@ public class JoinListener implements Listener {
 
         DrawLock.getDatabase().createPlayer(player.getName());
 
-        if (DrawLock.getDatabase().isRegistered(player.getName())) new MenuLogin(MenuController.getMenuUtils(player), null).open();
-        else new MenuRegister(MenuController.getMenuUtils(player)).open();
+        if (DrawLock.getDatabase().isRegistered(player.getName())) {
+            new MenuLogin(MenuController.getMenuUtils(player), null).open();
+            ScoreboardService.giveScoreboard(player, true);
+        } else {
+            new MenuRegister(MenuController.getMenuUtils(player)).open();
+            ScoreboardService.giveScoreboard(player, false);
+        }
 
         if (!ConfigKeys.BEAUTIFIER_JOIN_MESSAGE_IS_ENABLED.getBoolean()) return;
 

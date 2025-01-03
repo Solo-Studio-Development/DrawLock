@@ -8,6 +8,7 @@ import net.solostudio.drawlock.menu.menus.MenuChangePassword;
 import net.solostudio.drawlock.menu.menus.MenuLogin;
 import net.solostudio.drawlock.menu.menus.MenuRegister;
 import net.solostudio.drawlock.processor.MessageProcessor;
+import net.solostudio.drawlock.services.ScoreboardService;
 import net.solostudio.drawlock.utils.BossBarUtils;
 import net.solostudio.drawlock.utils.LoggerUtils;
 import org.bukkit.Bukkit;
@@ -65,6 +66,7 @@ public abstract class Menu implements InventoryHolder {
         menuController.owner().closeInventory();
 
         BossBarUtils.removeBossBar(menuController.owner());
+        ScoreboardService.removeScoreboard(menuController.owner());
 
         inventory = null;
     }

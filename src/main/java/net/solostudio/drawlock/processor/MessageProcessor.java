@@ -1,17 +1,21 @@
 package net.solostudio.drawlock.processor;
 
+import lombok.experimental.UtilityClass;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("deprecation")
+@UtilityClass
 public class MessageProcessor {
     private static final Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F\\d]{6}");
 
-    public static @NotNull String process(@Nullable String message) {
+    public @NotNull String process(@Nullable String message) {
         if (message == null) return "";
 
         Matcher matcher = HEX_PATTERN.matcher(message);
@@ -31,5 +35,14 @@ public class MessageProcessor {
         matcher.appendTail(result);
 
         return ChatColor.translateAlternateColorCodes('&', result.toString());
+    }
+
+    public @NotNull List<String> processList(@Nullable List<String> messages) {
+        if (messages == null) return new ArrayList<>();
+
+        List<String> processedMessages = new ArrayList<>();
+
+        messages.forEach(message -> processedMessages.add(process(message)));
+        return processedMessages;
     }
 }

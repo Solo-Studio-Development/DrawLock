@@ -63,7 +63,7 @@ password:
 login:
   bossbar:
     enabled: true
-    title: "&cYou have {time} seconds left to login!"
+    title: "&cYou have &f{time} &cseconds left to login!"
     color: "RED"
     style: "SOLID"
     flags:
@@ -102,7 +102,7 @@ login:
 register:
   bossbar:
     enabled: true
-    title: "&cYou have {time} seconds left to register!"
+    title: "&cYou have &f{time} &cseconds left to register!"
     color: "RED"
     style: "SOLID"
     flags:
@@ -165,3 +165,16 @@ beautifier:
       enabled: true
       name:
         - "UI_HUD_BUBBLE_POP"
+  scoreboards:
+    register:
+      title: "&c&lREGISTER"
+      lines:
+        - ""
+        - "&7Please register"
+        - "&7via menu!"
+    login:
+      title: "&c&lLOGIN"
+      lines:
+        - ""
+        - "&7Please login"
+        - "&7via menu!"

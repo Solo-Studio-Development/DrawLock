@@ -165,3 +165,16 @@ beautifier:
       enabled: true
       name:
         - "UI_HUD_BUBBLE_POP"
+  scoreboards:
+    register:
+      title: "&c&lREGISTER"
+      lines:
+        - ""
+        - "&7Please register"
+        - "&7via menu!"
+    login:
+      title: "&c&lLOGIN"
+      lines:
+        - ""
+        - "&7Please login"
+        - "&7via menu!"
