@@ -5,8 +5,9 @@ import net.solostudio.drawlock.DrawLock;
 import net.solostudio.drawlock.processor.MessageProcessor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
+
+import static net.solostudio.drawlock.hooks.PlaceholderAPI.isRegistered;
 
 public enum ConfigKeys {
     DATABASE("database.type"),
@@ -36,7 +37,9 @@ public enum ConfigKeys {
 
     REGISTER_NAME("register.gui.name"),
     REGISTER_SCOREBOARD_TITLE("beautifier.scoreboards.register.title"),
-    REGISTER_SCOREBOARD_LINES("beautifier.scoreboards.register.lines");
+    REGISTER_SCOREBOARD_LINES("beautifier.scoreboards.register.lines"),
+
+    RESET_COMMANDS_ON_RESET("reset.commands-on-reset");
 
     private final String path;
 
@@ -61,6 +64,6 @@ public enum ConfigKeys {
     }
 
     public List<String> getScoreboardList(@NotNull Player player) {
-        return MessageProcessor.processList(PlaceholderAPI.setPlaceholders(player, DrawLock.getInstance().getConfiguration().getList(path)));
+        return isRegistered ? MessageProcessor.processList(PlaceholderAPI.setPlaceholders(player, DrawLock.getInstance().getConfiguration().getList(path))) : MessageProcessor.processList(DrawLock.getInstance().getConfiguration().getList(path));
     }
 }

@@ -47,6 +47,8 @@ public class MenuRegister extends Menu {
 
             if (greenCount >= MINIMUM_PASSWORD_LENGTH) processPasswordRegistration(player);
         }
+
+        if (event.isShiftClick()) reset();
     }
 
     private void processPasswordRegistration(@NotNull Player player) {
@@ -74,5 +76,13 @@ public class MenuRegister extends Menu {
     @Override
     public void handleInventoryClose(final InventoryCloseEvent event) {
         super.handleInventoryClose(event);
+    }
+
+    private void reset() {
+        IntStream.range(0, inventory.getSize())
+                .forEach(index -> inventory.setItem(index, ItemKeys.REGISTER_BLANK.getItem()));
+
+        greenCount = 0;
+        selectedSlots.clear();
     }
 }

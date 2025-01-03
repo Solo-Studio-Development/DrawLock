@@ -42,6 +42,7 @@ implementation(files("libs/plugin.jar"))
 
 - `/drawlock reload` - Reloads the plugin.
 - `/drawlock changepassword` - Changes Password.
+- `/drawlock reset <player> <fully or not fully>` - Resets Password. | If you choose `fully`, it will reset the password and the player's data. If you choose `not fully`, it will only reset the password.
 
 ---
 
@@ -49,6 +50,7 @@ implementation(files("libs/plugin.jar"))
 
 - `drawlock.reload`
 - `drawlock.changepassword`
+- `drawlock.reset`
 
 ---
 

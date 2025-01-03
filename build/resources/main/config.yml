@@ -76,17 +76,21 @@ login:
     blank:
       material: "GRAY_STAINED_GLASS_PANE"
       amount: 1
-      name: "&8BLANK"
-      lore: [ ]
+      name: "&8&lBLANK"
+      lore:
+        - ""
+        - "&7Shift + Click to reset!"
     password:
       material: "LIME_STAINED_GLASS_PANE"
       amount: 1
-      name: "&aPASSWORD"
-      lore: [ ]
+      name: "&a&lPASSWORD"
+      lore:
+        - ""
+        - "&7Shift + Click to reset!"
     error:
       material: "RED_STAINED_GLASS_PANE"
       amount: 1
-      name: "&cERROR"
+      name: "&c&lERROR"
       lore: [ ]
   sounds:
     enabled: true
@@ -94,6 +98,10 @@ login:
       - "BLOCK_NOTE_BLOCK_BELL"
     denied:
       - "BLOCK_NOTE_BLOCK_BIT"
+  server:
+    enabled: false
+    where: "hub"
+
 
 # ============================================================== #
 # Register Settings                                              #
@@ -115,17 +123,24 @@ register:
     blank:
       material: "GRAY_STAINED_GLASS_PANE"
       amount: 1
-      name: "&8BLANK"
-      lore: [ ]
+      name: "&8&lBLANK"
+      lore:
+        - ""
+        - "&7Shift + Click to reset!"
     password:
       material: "LIME_STAINED_GLASS_PANE"
       amount: 1
-      name: "&aPASSWORD"
-      lore: [ ]
+      name: "&a&lPASSWORD"
+      lore:
+        - ""
+        - "&7Shift + Click to reset!"
   sounds:
     enabled: true
     success:
       - "BLOCK_NOTE_BLOCK_BELL"
+  server:
+    enabled: false
+    where: "hub"
 
 # ============================================================== #
 # Change Password Settings                                       #
@@ -137,13 +152,17 @@ change-password:
     blank:
       material: "GRAY_STAINED_GLASS_PANE"
       amount: 1
-      name: "&8BLANK"
-      lore: [ ]
+      name: "&8&lBLANK"
+      lore:
+        - ""
+        - "&7Shift + Click to reset!"
     password:
       material: "LIME_STAINED_GLASS_PANE"
       amount: 1
-      name: "&aPASSWORD"
-      lore: [ ]
+      name: "&a&lPASSWORD"
+      lore:
+        - ""
+        - "&7Shift + Click to reset!"
   sounds:
     enabled: true
     success:
@@ -178,3 +197,12 @@ beautifier:
         - ""
         - "&7Please login"
         - "&7via menu!"
+
+# ============================================================== #
+# Reset settings                                                 #
+# ============================================================== #
+
+reset:
+  commands-on-reset:
+    - "kick {player} You have been reset!" # These commands will be executed when the player is reset.
+    - "say &c{player} &7has been reset!"

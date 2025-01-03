@@ -1,6 +1,8 @@
 package net.solostudio.drawlock.utils;
 
 import net.solostudio.drawlock.DrawLock;
+import net.solostudio.drawlock.annotations.FullyOrNot;
+import net.solostudio.drawlock.annotations.PlayersFromDatabase;
 import net.solostudio.drawlock.commands.CommandDrawLock;
 import net.solostudio.drawlock.exception.CommandExceptionHandler;
 import net.solostudio.drawlock.listeners.JoinListener;
@@ -8,6 +10,8 @@ import net.solostudio.drawlock.listeners.MenuListener;
 import net.solostudio.drawlock.listeners.QuitListener;
 import org.bukkit.Bukkit;
 import revxrsal.commands.bukkit.BukkitLamp;
+
+import java.util.List;
 
 public class RegisterUtils {
     public static void registerListeners() {
@@ -25,6 +29,10 @@ public class RegisterUtils {
 
         var lamp = BukkitLamp.builder(DrawLock.getInstance())
                 .exceptionHandler(new CommandExceptionHandler())
+                .suggestionProviders(providers -> providers.addProviderForAnnotation(PlayersFromDatabase.class, playersFromDatabase -> context -> DrawLock.getDatabase().getEveryPlayerInDatabase()
+                        .stream()
+                        .toList()))
+                .suggestionProviders(providers -> providers.addProviderForAnnotation(FullyOrNot.class, fullyOrNot -> context -> List.of("fully", "not fully")))
                 .build();
 
 

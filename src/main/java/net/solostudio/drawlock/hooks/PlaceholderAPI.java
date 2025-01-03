@@ -9,8 +9,13 @@ import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
 public class PlaceholderAPI {
+    public static boolean isRegistered = false;
+
     public static void registerHook() {
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) new PlaceholderIntegration().register();
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new PlaceholderIntegration().register();
+            isRegistered = true;
+        }
     }
 
     private static class PlaceholderIntegration extends PlaceholderExpansion {

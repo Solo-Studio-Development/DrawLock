@@ -1,11 +1,16 @@
 package net.solostudio.drawlock.commands;
 
 import net.solostudio.drawlock.DrawLock;
+import net.solostudio.drawlock.annotations.FullyOrNot;
+import net.solostudio.drawlock.annotations.PlayersFromDatabase;
+import net.solostudio.drawlock.enums.keys.ConfigKeys;
 import net.solostudio.drawlock.enums.keys.MessageKeys;
 import net.solostudio.drawlock.managers.MenuController;
 import net.solostudio.drawlock.menu.menus.MenuChangePassword;
 import net.solostudio.drawlock.menu.menus.MenuLogin;
 import net.solostudio.drawlock.menu.menus.MenuRegister;
+import net.solostudio.drawlock.utils.DrawLockUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -44,5 +49,18 @@ public class CommandDrawLock {
         });
 
         menuLogin.open();
+    }
+
+    @Subcommand("reset")
+    @Description("Resets the player.")
+    @CommandPermission("drawlock.reset")
+    public void reset(@NotNull CommandSender sender, @PlayersFromDatabase @NotNull String player, @FullyOrNot @NotNull String full) {
+        if (DrawLockUtils.valueOf(full)) {
+            DrawLock.getDatabase().resetFully(player);
+            DrawLockUtils.handleReset(sender, player);
+        } else {
+            DrawLock.getDatabase().resetWithoutDates(player);
+            DrawLockUtils.handleReset(sender, player);
+        }
     }
 }

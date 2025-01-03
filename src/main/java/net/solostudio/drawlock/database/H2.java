@@ -14,7 +14,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 public class H2 extends AbstractDatabase {
@@ -123,6 +125,50 @@ public class H2 extends AbstractDatabase {
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
             preparedStatement.setString(1, password);
             preparedStatement.setString(2, playerName);
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+    }
+
+    @Override
+    public void resetFully(@NotNull String playerName) {
+        String query = "UPDATE drawlock SET PASSWORD = '', CREATED_AT = '', LAST_LOGIN = '' WHERE PLAYER = ?";
+
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, playerName);
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+    }
+
+    @Override
+    public List<String> getEveryPlayerInDatabase() {
+        List<String> players = new ArrayList<>();
+        String query = "SELECT PLAYER FROM drawlock";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String player = resultSet.getString("PLAYER");
+
+                players.add(player);
+            }
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+
+        return players;
+    }
+
+    @Override
+    public void resetWithoutDates(@NotNull String playerName) {
+        String query = "UPDATE drawlock SET PASSWORD = '' WHERE PLAYER = ?";
+
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, playerName);
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());

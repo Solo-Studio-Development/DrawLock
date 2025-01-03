@@ -77,12 +77,16 @@ login:
       material: "GRAY_STAINED_GLASS_PANE"
       amount: 1
       name: "&8&lBLANK"
-      lore: [ ]
+      lore:
+        - ""
+        - "&7Shift + Click to reset!"
     password:
       material: "LIME_STAINED_GLASS_PANE"
       amount: 1
       name: "&a&lPASSWORD"
-      lore: [ ]
+      lore:
+        - ""
+        - "&7Shift + Click to reset!"
     error:
       material: "RED_STAINED_GLASS_PANE"
       amount: 1
@@ -120,12 +124,16 @@ register:
       material: "GRAY_STAINED_GLASS_PANE"
       amount: 1
       name: "&8&lBLANK"
-      lore: [ ]
+      lore:
+        - ""
+        - "&7Shift + Click to reset!"
     password:
       material: "LIME_STAINED_GLASS_PANE"
       amount: 1
       name: "&a&lPASSWORD"
-      lore: [ ]
+      lore:
+        - ""
+        - "&7Shift + Click to reset!"
   sounds:
     enabled: true
     success:
@@ -145,12 +153,16 @@ change-password:
       material: "GRAY_STAINED_GLASS_PANE"
       amount: 1
       name: "&8&lBLANK"
-      lore: [ ]
+      lore:
+        - ""
+        - "&7Shift + Click to reset!"
     password:
       material: "LIME_STAINED_GLASS_PANE"
       amount: 1
       name: "&a&lPASSWORD"
-      lore: [ ]
+      lore:
+        - ""
+        - "&7Shift + Click to reset!"
   sounds:
     enabled: true
     success:
@@ -185,3 +197,12 @@ beautifier:
         - ""
         - "&7Please login"
         - "&7via menu!"
+
+# ============================================================== #
+# Reset settings                                                 #
+# ============================================================== #
+
+reset:
+  commands-on-reset:
+    - "kick {player} You have been reset!" # These commands will be executed when the player is reset.
+    - "say &c{player} &7has been reset!"

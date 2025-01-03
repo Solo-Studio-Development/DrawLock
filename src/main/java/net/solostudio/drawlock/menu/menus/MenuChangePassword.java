@@ -11,7 +11,6 @@ import net.solostudio.drawlock.utils.DrawLockUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -46,6 +45,8 @@ public class MenuChangePassword extends Menu {
 
             if (greenCount >= minPasswordLength) changePassword(player);
         }
+
+        if (event.isShiftClick()) reset();
     }
 
     private void changePassword(@NotNull Player player) {
@@ -73,5 +74,13 @@ public class MenuChangePassword extends Menu {
     @Override
     public void handleInventoryClose(final InventoryCloseEvent event) {
         super.handleInventoryClose(event);
+    }
+
+    private void reset() {
+        IntStream.range(0, inventory.getSize())
+                .forEach(index -> inventory.setItem(index, ItemKeys.CHANGE_PASSWORD_BLANK.getItem()));
+
+        greenCount = 0;
+        selectedSlots.clear();
     }
 }
