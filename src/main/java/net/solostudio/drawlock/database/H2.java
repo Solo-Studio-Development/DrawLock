@@ -5,7 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import net.solostudio.drawlock.DrawLock;
 import net.solostudio.drawlock.enums.keys.ConfigKeys;
-import net.solostudio.drawlock.utils.AES256Utils;
+import net.solostudio.drawlock.interfaces.DrawLockDatabase;
 import net.solostudio.drawlock.utils.LoggerUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 @Getter
-public class H2 extends AbstractDatabase {
+public class H2 implements DrawLockDatabase {
     private final Connection connection;
     private final HikariDataSource dataSource;
 
@@ -177,19 +177,19 @@ public class H2 extends AbstractDatabase {
 
     @Override
     public String getPassword(@NotNull String playerName) {
-        String password = null;
+        String hashedPassword = null;
 
         String query = "SELECT PASSWORD FROM drawlock WHERE PLAYER = ?";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
             preparedStatement.setString(1, playerName);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) password = resultSet.getString("PASSWORD");
+            if (resultSet.next()) hashedPassword = resultSet.getString("PASSWORD");
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());
         }
 
-        return password != null ? AES256Utils.decrypt(password) : null;
+        return hashedPassword;
     }
 
     @Override

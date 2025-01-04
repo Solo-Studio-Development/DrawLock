@@ -35,17 +35,6 @@ basic:
   date-format: "yyyy. MM. dd | HH:mm" # This is the date format used for the creation date and last login date.
 
 # ============================================================== #
-# Important Encryption Settings (AES-256-GCM)                    #
-# ============================================================== #
-
-# Please do not show this to anyone else :) (For Your safety and that of Your Players)
-
-encryption:
-  secret-key: "dzyQXlqZydzaYIQMvGlwEpQsXtyFpjfG" # Length ==> 256 = 32 | 192 = 24 | 128 = 16 -- CHANGE THIS! THIS IS AN EXAMPLE GO TO https://www.lastpass.com/features/password-generator TO CREATE UNIQUE ONE
-  salt: "xYCOUaSrOMkiQrcisPdXTxjIDNLCPnbp" # A random value which is added at the beginning of the encrypted text. -- CHANGE THIS! THIS IS AN EXAMPLE GO TO https://www.lastpass.com/features/password-generator TO CREATE UNIQUE ONE
-  iv: "YWaUYyQMheDe" # Must be 12 characters long! -- CHANGE THIS! THIS IS AN EXAMPLE GO TO https://www.lastpass.com/features/password-generator TO CREATE UNIQUE ONE
-
-# ============================================================== #
 # Password Setting                                               #
 # ============================================================== #
 

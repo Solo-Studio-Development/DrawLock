@@ -7,6 +7,7 @@ import net.solostudio.drawlock.enums.keys.ItemKeys;
 import net.solostudio.drawlock.enums.keys.MessageKeys;
 import net.solostudio.drawlock.managers.MenuController;
 import net.solostudio.drawlock.menu.Menu;
+import net.solostudio.drawlock.utils.BCryptUtils;
 import net.solostudio.drawlock.utils.DrawLockUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -69,9 +70,9 @@ public class MenuLogin extends Menu {
                 .map(String::valueOf)
                 .collect(Collectors.joining(", "));
 
-        String encryptedPassword = DrawLock.getDatabase().getPassword(player.getName());
+        String hashedPassword = DrawLock.getDatabase().getPassword(player.getName());
 
-        if (encryptedPassword.equals(password)) handleSuccessfulLogin();
+        if (BCryptUtils.checkPassword(password, hashedPassword)) handleSuccessfulLogin();
         else setErrorItems();
     }
 

@@ -6,12 +6,11 @@ import net.solostudio.drawlock.enums.keys.ItemKeys;
 import net.solostudio.drawlock.enums.keys.MessageKeys;
 import net.solostudio.drawlock.managers.MenuController;
 import net.solostudio.drawlock.menu.Menu;
-import net.solostudio.drawlock.utils.AES256Utils;
+import net.solostudio.drawlock.utils.BCryptUtils;
 import net.solostudio.drawlock.utils.DrawLockUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -55,14 +54,17 @@ public class MenuRegister extends Menu {
         String password = selectedSlots.stream()
                 .map(String::valueOf)
                 .collect(Collectors.joining(", "));
-        String encryptedPassword = AES256Utils.encrypt(password);
+
+        String hashedPassword = BCryptUtils.hashPassword(password);
 
         close();
-        DrawLock.getDatabase().savePasswordToDatabase(player.getName(), Objects.requireNonNull(encryptedPassword));
+        DrawLock.getDatabase().savePasswordToDatabase(player.getName(), hashedPassword);
         DrawLock.getDatabase().saveDate(player.getName(), "CREATED_AT");
         DrawLock.getDatabase().saveDate(player.getName(), "LAST_LOGIN");
+
         player.sendMessage(MessageKeys.SUCCESS_REGISTER.getMessage());
         DrawLockUtils.playSound(player, "register.sounds", ".success");
+
         DrawLockUtils.sendToServer(menuController.owner(), "register.server");
     }
 

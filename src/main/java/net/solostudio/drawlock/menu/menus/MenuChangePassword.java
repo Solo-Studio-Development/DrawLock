@@ -6,7 +6,7 @@ import net.solostudio.drawlock.enums.keys.ItemKeys;
 import net.solostudio.drawlock.enums.keys.MessageKeys;
 import net.solostudio.drawlock.managers.MenuController;
 import net.solostudio.drawlock.menu.Menu;
-import net.solostudio.drawlock.utils.AES256Utils;
+import net.solostudio.drawlock.utils.BCryptUtils;
 import net.solostudio.drawlock.utils.DrawLockUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -55,13 +55,13 @@ public class MenuChangePassword extends Menu {
                 .reduce((s1, s2) -> s1 + ", " + s2)
                 .orElse("");
 
-        String encryptedPassword = AES256Utils.encrypt(password);
-
+        String hashedPassword = BCryptUtils.hashPassword(password);
 
         close();
-        DrawLock.getDatabase().savePasswordToDatabase(player.getName(), Objects.requireNonNull(encryptedPassword));
+        DrawLock.getDatabase().savePasswordToDatabase(player.getName(), hashedPassword);
         player.sendMessage(MessageKeys.SUCCESS_CHANGE_PASSWORD.getMessage());
         DrawLockUtils.playSound(player, "change-password.sounds", ".success");
+
     }
 
     @Override

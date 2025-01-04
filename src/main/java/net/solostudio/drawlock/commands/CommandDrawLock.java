@@ -44,9 +44,7 @@ public class CommandDrawLock {
     public void changePassword(@NotNull Player player) {
         MenuController menuController = MenuController.getMenuUtils(player);
 
-        MenuLogin menuLogin = new MenuLogin(menuController, () -> {
-            new MenuChangePassword(menuController).open();
-        });
+        MenuLogin menuLogin = new MenuLogin(menuController, () -> new MenuChangePassword(menuController).open());
 
         menuLogin.open();
     }

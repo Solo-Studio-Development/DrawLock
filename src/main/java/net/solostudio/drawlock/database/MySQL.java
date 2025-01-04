@@ -4,7 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import net.solostudio.drawlock.enums.keys.ConfigKeys;
-import net.solostudio.drawlock.utils.AES256Utils;
+import net.solostudio.drawlock.interfaces.DrawLockDatabase;
 import net.solostudio.drawlock.utils.LoggerUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Getter
-public class MySQL extends AbstractDatabase {
+public class MySQL implements DrawLockDatabase {
     private final Connection connection;
 
     public MySQL(@NotNull ConfigurationSection section) throws SQLException {
@@ -151,19 +151,19 @@ public class MySQL extends AbstractDatabase {
 
     @Override
     public String getPassword(@NotNull String playerName) {
-        String password = null;
+        String hashedPassword = null;
 
         String query = "SELECT PASSWORD FROM drawlock WHERE PLAYER = ?";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
             preparedStatement.setString(1, playerName);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) password = resultSet.getString("PASSWORD");
+            if (resultSet.next()) hashedPassword = resultSet.getString("PASSWORD");
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());
         }
 
-        return password != null ? AES256Utils.decrypt(password) : null;
+        return hashedPassword;
     }
 
     @Override

@@ -15,9 +15,6 @@ public enum ConfigKeys {
 
     BASIC_DATE_FORMAT("basic.date-format"),
 
-    ENCRYPTION_SECRET_KEY("encryption.secret-key"),
-    ENCRYPTION_IV("encryption.iv"),
-
     BEAUTIFIER_JOIN_MESSAGE("beautifier.join.message"),
     BEAUTIFIER_JOIN_MESSAGE_IS_ENABLED("beautifier.join.enabled"),
 
