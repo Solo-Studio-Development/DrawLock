@@ -2,6 +2,7 @@ package net.solostudio.drawlock;
 
 import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
+import com.warrenstrange.googleauth.GoogleAuthenticator;
 import lombok.Getter;
 import net.solostudio.drawlock.config.Config;
 import net.solostudio.drawlock.database.DatabaseProxy;
@@ -18,6 +19,7 @@ import revxrsal.zapper.ZapperJavaPlugin;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Objects;
 
 import static net.solostudio.drawlock.hooks.PlaceholderAPI.registerHook;
@@ -25,16 +27,20 @@ import static net.solostudio.drawlock.utils.StartingUtils.initialize;
 import static net.solostudio.drawlock.utils.StartingUtils.saveResourceIfNotExists;
 
 public final class DrawLock extends ZapperJavaPlugin {
+    private static final int BSTATS_ID = 24209;
+
     @Getter private static DrawLock instance;
+    @Getter private static DrawLockDatabase database;
     @Getter private TaskScheduler scheduler;
     @Getter private Language language;
-    @Getter private static DrawLockDatabase database;
+    @Getter private GoogleAuthenticator googleAuthenticator;
     private Config config;
 
     @Override
     public void onLoad() {
         instance = this;
         scheduler = UniversalScheduler.getScheduler(this);
+        googleAuthenticator = new GoogleAuthenticator();
     }
 
     @Override
@@ -51,7 +57,7 @@ public final class DrawLock extends ZapperJavaPlugin {
             LoggerUtils.error(exception.getMessage());
         }
 
-        new Metrics(this, 24209);
+        new Metrics(this, BSTATS_ID);
         registerHook();
     }
 
@@ -69,9 +75,11 @@ public final class DrawLock extends ZapperJavaPlugin {
     private void initializeComponents() {
         config = new Config();
 
-        saveResourceIfNotExists("locales/messages_en.yml");
-        saveResourceIfNotExists("locales/messages_de.yml");
         saveResourceIfNotExists("config.yml");
+
+        Arrays.stream(LanguageTypes.values())
+                .map(LanguageTypes::name)
+                .forEach(name -> saveResourceIfNotExists("locales/messages_" + name.toLowerCase() + ".yml"));
 
         language = new Language("messages_" + LanguageTypes.valueOf(ConfigKeys.LANGUAGE.getString()));
     }

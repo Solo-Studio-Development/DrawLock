@@ -31,6 +31,9 @@ dependencies {
     zap("com.zaxxer:HikariCP:6.2.1")
     zap("fr.mrmicky:fastboard:2.1.3")
     zap("org.mindrot:jbcrypt:0.4")
+    zap('com.warrenstrange:googleauth:1.5.0')
+    zap('com.google.zxing:core:3.4.1')
+    zap('com.google.zxing:javase:3.4.0')
 
     compileOnly("org.projectlombok:lombok:1.18.36")
     compileOnly("me.clip:placeholderapi:2.11.6")

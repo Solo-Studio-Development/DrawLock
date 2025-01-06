@@ -168,6 +168,8 @@ public class MySQL implements DrawLockDatabase {
 
     @Override
     public void saveDate(@NotNull String playerName, @NotNull String column) {
+        if (!List.of("CREATED_AT", "LAST_LOGIN").contains(column)) throw new IllegalArgumentException("Invalid column name");
+
         String query = "UPDATE drawlock SET " + column + " = ? WHERE PLAYER = ?";
 
         String currentDateTime = new SimpleDateFormat(ConfigKeys.BASIC_DATE_FORMAT.getString()).format(new Date());

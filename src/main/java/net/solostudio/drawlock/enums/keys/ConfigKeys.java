@@ -36,7 +36,10 @@ public enum ConfigKeys {
     REGISTER_SCOREBOARD_TITLE("beautifier.scoreboards.register.title"),
     REGISTER_SCOREBOARD_LINES("beautifier.scoreboards.register.lines"),
 
-    RESET_COMMANDS_ON_RESET("reset.commands-on-reset");
+    RESET_COMMANDS_ON_RESET("reset.commands-on-reset"),
+
+    TOTP_ENABLED("totp.enabled"),
+    TOTP_NAME("totp.name");
 
     private final String path;
 

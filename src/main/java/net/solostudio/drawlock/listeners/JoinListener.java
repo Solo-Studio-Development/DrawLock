@@ -3,12 +3,10 @@ package net.solostudio.drawlock.listeners;
 import net.solostudio.drawlock.DrawLock;
 import net.solostudio.drawlock.enums.keys.ConfigKeys;
 import net.solostudio.drawlock.managers.MenuController;
-import net.solostudio.drawlock.menu.Menu;
 import net.solostudio.drawlock.menu.menus.MenuLogin;
 import net.solostudio.drawlock.menu.menus.MenuRegister;
 import net.solostudio.drawlock.services.ScoreboardService;
 import net.solostudio.drawlock.utils.DrawLockUtils;
-import net.solostudio.drawlock.utils.LoggerUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,6 +19,9 @@ public class JoinListener implements Listener {
         Player player = event.getPlayer();
 
         DrawLock.getDatabase().createPlayer(player.getName());
+
+        MapUtils.createImageMap(player);
+
 
         if (DrawLock.getDatabase().isRegistered(player.getName())) {
             new MenuLogin(MenuController.getMenuUtils(player), null).open();
