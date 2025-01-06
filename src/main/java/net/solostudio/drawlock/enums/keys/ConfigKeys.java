@@ -39,7 +39,8 @@ public enum ConfigKeys {
     RESET_COMMANDS_ON_RESET("reset.commands-on-reset"),
 
     TOTP_ENABLED("totp.enabled"),
-    TOTP_NAME("totp.name");
+    TOTP_NAME("totp.name"),
+    TOTP_LOGO_URL("totp.logo");
 
     private final String path;
 

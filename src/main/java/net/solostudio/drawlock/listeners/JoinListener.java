@@ -20,9 +20,6 @@ public class JoinListener implements Listener {
 
         DrawLock.getDatabase().createPlayer(player.getName());
 
-        MapUtils.createImageMap(player);
-
-
         if (DrawLock.getDatabase().isRegistered(player.getName())) {
             new MenuLogin(MenuController.getMenuUtils(player), null).open();
             ScoreboardService.giveScoreboard(player, true);

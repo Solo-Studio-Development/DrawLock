@@ -2,6 +2,7 @@ package net.solostudio.drawlock.utils;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import lombok.experimental.UtilityClass;
@@ -18,13 +19,14 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
 @UtilityClass
 @SuppressWarnings("all")
 public class TOTPUtils {
-    public ItemStack createMapFromQRCode(@NotNull String qrCodePath, @NotNull Player player) {
+    public ItemStack createMapFromQRCode(@NotNull String data, @NotNull Player player) {
         var mapItem = new ItemStack(Material.FILLED_MAP);
         var map = Bukkit.createMap(player.getWorld());
 
@@ -39,7 +41,11 @@ public class TOTPUtils {
                 rendered = true;
 
                 try {
-                    BufferedImage qrImage = ImageIO.read(new File(qrCodePath));
+                    BitMatrix bitMatrix = new MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, 200, 200);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+                    ImageIO.write(qrImage, "PNG", byteArrayOutputStream);
+                    byte[] qrData = byteArrayOutputStream.toByteArray();
                     BufferedImage resizedImage = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
                     var graphics = resizedImage.createGraphics();
 
@@ -53,7 +59,7 @@ public class TOTPUtils {
                             canvas.setPixel(x, y, mapColor);
                         }
                     }
-                } catch (IOException exception) {
+                } catch (IOException | WriterException exception ) {
                     player.sendMessage("Hiba történt a QR-kód térképre renderelése során!");
                     LoggerUtils.error(exception.getMessage());
                 }
@@ -61,7 +67,6 @@ public class TOTPUtils {
         });
 
         var meta = (MapMeta) mapItem.getItemMeta();
-
         meta.setMapView(map);
         mapItem.setItemMeta(meta);
         return mapItem;

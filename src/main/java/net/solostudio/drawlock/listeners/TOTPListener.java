@@ -1,8 +1,12 @@
 package net.solostudio.drawlock.listeners;
 
+import com.warrenstrange.googleauth.GoogleAuthenticator;
 import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
+import com.warrenstrange.googleauth.ICredentialRepository;
 import net.solostudio.drawlock.DrawLock;
+import net.solostudio.drawlock.database.TOTPCredentials;
 import net.solostudio.drawlock.enums.keys.ConfigKeys;
+import net.solostudio.drawlock.utils.BCryptUtils;
 import net.solostudio.drawlock.utils.TOTPUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,55 +15,51 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
 @SuppressWarnings("deprecation")
 public class TOTPListener implements Listener {
-    private final Map<String, String> playerSecrets = new HashMap<>();
-
     @EventHandler
     public void onJoin(final PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        GoogleAuthenticatorKey key = DrawLock.getInstance().getGoogleAuthenticator().createCredentials(player.getName());
-        String secretKey = key.getKey();
-        playerSecrets.put(player.getName(), secretKey);
+        TOTPCredentials credentialRepository = new TOTPCredentials();
+        String existingSecretKey = credentialRepository.getSecretKey(player.getName());
 
-        String otpAuthUrl = String.format("otpauth://totp/%s?secret=%s&issuer=%s", player.getName(), secretKey, ConfigKeys.TOTP_NAME.getString());
+        if (existingSecretKey == null) {
+            GoogleAuthenticatorKey key = DrawLock.getInstance().getGoogleAuthenticator().createCredentials(player.getName());
+            String secretKey = key.getKey();
 
-        String qrCodePath = "plugins/DrawLock/" + player.getName() + "_qr.png";
-        TOTPUtils.generateQRCode(otpAuthUrl, qrCodePath);
+            credentialRepository.saveUserCredentials(player.getName(), secretKey, 0, null);
 
-        player.sendMessage("Your secret key: " + secretKey);
-        player.sendMessage("Scan this QR code with your authenticator app.");
+            String otpAuthUrl = String.format("otpauth://totp/%s?secret=%s&issuer=%s&logo=%s", player.getName(), secretKey, ConfigKeys.TOTP_NAME.getString(), ConfigKeys.TOTP_LOGO_URL.getString());
 
-        ItemStack mapItem = TOTPUtils.createMapFromQRCode(qrCodePath, player);
-        player.getInventory().addItem(mapItem);
+            ItemStack mapItem = TOTPUtils.createMapFromQRCode(otpAuthUrl, player);
+            player.getInventory().addItem(mapItem);
+
+            player.sendMessage("Your secret key: " + secretKey);
+            player.sendMessage("Scan this QR code with your authenticator app.");
+        } else {
+            player.sendMessage("You already have a secret key set up. Use your authenticator app to log in.");
+        }
     }
 
     @EventHandler
     public void onPlayerChat(final AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
+        TOTPCredentials credentialRepository = new TOTPCredentials();
 
-        if (playerSecrets.containsKey(player.getName())) {
-            String secretKey = playerSecrets.get(player.getName());
-            boolean isValid = DrawLock.getInstance().getGoogleAuthenticator().authorize(secretKey, Integer.parseInt(message));
+        String secretKey = credentialRepository.getSecretKey(player.getName());
+
+        if (secretKey != null) {
+            GoogleAuthenticator googleAuthenticator = DrawLock.getInstance().getGoogleAuthenticator();
+
+            boolean isValid = googleAuthenticator.authorize(secretKey, Integer.parseInt(message));
 
             if (isValid) {
                 event.setCancelled(true);
                 player.getInventory().clear();
                 player.sendMessage("Sikeres autentikáció!");
-
-                String qrCodePath = "plugins/TOTPTest/" + player.getName() + "_qr.png";
-                File qrFile = new File(qrCodePath);
-
-                if (qrFile.exists()) qrFile.delete();
-
-                playerSecrets.remove(player.getName());
             } else {
-                player.sendMessage("Helytelen jelszó! Próbáld újra.");
+                player.sendMessage("Helytelen kód! Próbáld újra.");
             }
         }
     }

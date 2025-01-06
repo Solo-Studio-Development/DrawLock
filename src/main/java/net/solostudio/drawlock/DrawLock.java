@@ -6,6 +6,7 @@ import com.warrenstrange.googleauth.GoogleAuthenticator;
 import lombok.Getter;
 import net.solostudio.drawlock.config.Config;
 import net.solostudio.drawlock.database.DatabaseProxy;
+import net.solostudio.drawlock.database.TOTPCredentials;
 import net.solostudio.drawlock.interfaces.DrawLockDatabase;
 import net.solostudio.drawlock.database.H2;
 import net.solostudio.drawlock.database.MySQL;
@@ -58,6 +59,7 @@ public final class DrawLock extends ZapperJavaPlugin {
         }
 
         new Metrics(this, BSTATS_ID);
+        getGoogleAuthenticator().setCredentialRepository(new TOTPCredentials());
         registerHook();
     }
 

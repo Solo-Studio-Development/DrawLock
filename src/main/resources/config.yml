@@ -203,4 +203,5 @@ reset:
 totp:
   enabled: true
   name: "My Server"
+  logo: "https://i.imgur.com/tHqZIm7.png"
 

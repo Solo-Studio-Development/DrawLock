@@ -57,11 +57,23 @@ public class H2 implements DrawLockDatabase {
     }
 
     @Override
+    public Connection getConnection() {
+        return connection;
+    }
+
+    @Override
     public void createTable() {
         String drawLockTableQuery = "CREATE TABLE IF NOT EXISTS drawlock (PLAYER VARCHAR(255) NOT NULL, PASSWORD VARCHAR(65535) NOT NULL DEFAULT '', CREATED_AT VARCHAR(255), LAST_LOGIN VARCHAR(255), PRIMARY KEY (PLAYER))";
+        String totpTableQuery = "CREATE TABLE IF NOT EXISTS totp (USERNAME VARCHAR(255) NOT NULL, SECRET VARCHAR(255) NOT NULL, SCRATCH_CODES TEXT, PRIMARY KEY (USERNAME))";
 
         try (PreparedStatement drawLockTableStatement = getConnection().prepareStatement(drawLockTableQuery)) {
             drawLockTableStatement.execute();
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+
+        try (PreparedStatement totpTableStatement = getConnection().prepareStatement(totpTableQuery)) {
+            totpTableStatement.execute();
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());
         }

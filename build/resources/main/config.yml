@@ -195,3 +195,13 @@ reset:
   commands-on-reset:
     - "kick {player} You have been reset!" # These commands will be executed when the player is reset.
     - "say &c{player} &7has been reset!"
+
+# ============================================================== #
+# TOTP Settings                                                  #
+# ============================================================== #
+
+totp:
+  enabled: true
+  name: "My Server"
+  logo: "https://i.imgur.com/tHqZIm7.png"
+

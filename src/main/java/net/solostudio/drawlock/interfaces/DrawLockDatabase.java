@@ -2,12 +2,15 @@ package net.solostudio.drawlock.interfaces;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Connection;
 import java.util.List;
 
 public interface DrawLockDatabase {
     boolean isConnected();
 
     void disconnect();
+
+    Connection getConnection();
 
     void createTable();
 
