@@ -23,8 +23,8 @@ public class StartingUtils {
         validateEnvironment();
     }
 
-    public static void saveResourceIfNotExists(@NotNull String resourcePath) {
-        File targetFile = new File(DrawLock.getInstance().getDataFolder(), resourcePath);
+    public static void saveResourceIfNotExists(@NotNull final String resourcePath) {
+        final var targetFile = new File(DrawLock.getInstance().getDataFolder(), resourcePath);
 
         if (!targetFile.exists()) DrawLock.getInstance().saveResource(resourcePath, false);
     }
@@ -39,11 +39,13 @@ public class StartingUtils {
     }
 
     private static boolean checkVMVersion() {
-        int vmVersion = getVMVersion();
+        final var vmVersion = getVMVersion();
+
         if (vmVersion < REQUIRED_VM_VERSION) {
             LoggerUtils.error("### Detected Java version: {}. Required: {} or higher. ###", vmVersion, REQUIRED_VM_VERSION);
             return false;
         }
+
         return true;
     }
 
@@ -53,10 +55,12 @@ public class StartingUtils {
             return false;
         }
 
-        String bukkitVersion = Bukkit.getVersion();
+        final var bukkitVersion = Bukkit.getVersion();
+
         LoggerUtils.info("### Detected Bukkit version string: {} ###", bukkitVersion);
 
         VersionTypes version = extractVersionFromBukkitString(bukkitVersion);
+
         if (version == VersionTypes.UNKNOWN) {
             LoggerUtils.error("### Unknown Minecraft version detected. ###");
             return false;
@@ -74,9 +78,9 @@ public class StartingUtils {
         }
     }
 
-    private static VersionTypes extractVersionFromBukkitString(String bukkitVersion) {
-        Pattern versionPattern = Pattern.compile("\\(MC: (\\d{1,2})\\.(\\d{1,2})(?:\\.(\\d{1,2}))?\\)");
-        Matcher matcher = versionPattern.matcher(bukkitVersion);
+    private static VersionTypes extractVersionFromBukkitString(@NotNull final String bukkitVersion) {
+        final var versionPattern = Pattern.compile("\\(MC: (\\d{1,2})\\.(\\d{1,2})(?:\\.(\\d{1,2}))?\\)");
+        final var matcher = versionPattern.matcher(bukkitVersion);
 
         if (matcher.find()) {
             int majorVersion = Integer.parseInt(matcher.group(1));
@@ -91,8 +95,8 @@ public class StartingUtils {
     }
 
     private static int getVMVersion() {
-        String javaVersion = System.getProperty("java.version");
-        Matcher matcher = Pattern.compile("(?:1\\.)?(\\d+)").matcher(javaVersion);
+        final var javaVersion = System.getProperty("java.version");
+        final var matcher = Pattern.compile("(?:1\\.)?(\\d+)").matcher(javaVersion);
 
         if (matcher.find()) {
             try {

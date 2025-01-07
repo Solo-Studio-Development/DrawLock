@@ -20,56 +20,56 @@ public class ItemBuilder implements ItemFactory {
     private final ItemMeta meta;
     private boolean finished = false;
 
-    public ItemBuilder(@NotNull ItemStack item) {
+    public ItemBuilder(@NotNull final ItemStack item) {
         is = item;
         meta = item.getItemMeta();
     }
 
-    ItemBuilder(@NotNull Material type) {
+    ItemBuilder(@NotNull final Material type) {
         this(type, 1);
     }
 
-    public ItemBuilder(@NotNull Material type, @Range(from = 0, to = 64) int amount) {
+    public ItemBuilder(@NotNull final Material type, @Range(from = 0, to = 64) final int amount) {
         this(type, amount, (short) 0);
     }
 
-    public ItemBuilder(@NotNull Material type, @Range(from = 0, to = 64) int amount, short damage) {
+    public ItemBuilder(@NotNull final Material type, @Range(from = 0, to = 64) final int amount, final short damage) {
         this(type, amount, damage, null);
     }
 
-    public ItemBuilder(@NotNull Material type, @Range(from = 0, to = 64) int amount, short damage, @Nullable Byte data) {
+    public ItemBuilder(@NotNull final Material type, @Range(from = 0, to = 64) final int amount, final short damage, @Nullable final Byte data) {
         is = new ItemStack(type, amount, damage, data);
         meta = is.getItemMeta();
     }
 
     @Override
-    public ItemBuilder setType(@NotNull Material material) {
+    public ItemBuilder setType(@NotNull final Material material) {
         is.setType(material);
         return this;
     }
 
     @Override
-    public ItemBuilder setCount(@Range(from = 0, to = 64) int newCount) {
+    public ItemBuilder setCount(@Range(from = 0, to = 64) final int newCount) {
         is.setAmount(newCount);
         return this;
     }
 
     @Override
-    public ItemBuilder setName(@NotNull String name) {
+    public ItemBuilder setName(@NotNull final String name) {
         meta.setDisplayName(MessageProcessor.process(name));
         return this;
     }
 
     @Override
-    public ItemBuilder addEnchantment(@NotNull Enchantment enchantment, int level) {
+    public ItemBuilder addEnchantment(@NotNull final Enchantment enchantment, final int level) {
         meta.addEnchant(enchantment, level, true);
         return this;
     }
 
     @Override
-    public ItemBuilder addLore(@NotNull String... lores) {
-        List<String> loreList = Arrays.asList(lores);
-        List<String> currentLores = meta.getLore();
+    public ItemBuilder addLore(@NotNull final String... lores) {
+        var loreList = Arrays.asList(lores);
+        var currentLores = meta.getLore();
         currentLores = currentLores == null ? new ArrayList<>() : currentLores;
 
         currentLores.addAll(loreList);
@@ -85,15 +85,15 @@ public class ItemBuilder implements ItemFactory {
         return this;
     }
 
-    public ItemBuilder addFlag(@NotNull ItemFlag flag) {
+    public ItemBuilder addFlag(@NotNull final ItemFlag flag) {
         meta.addItemFlags(flag);
 
         return this;
     }
 
     @Override
-    public ItemBuilder removeLore(int line) {
-        List<String> lores = meta.getLore();
+    public ItemBuilder removeLore(final int line) {
+        var lores = meta.getLore();
         lores = lores == null ? new ArrayList<>() : lores;
 
         lores.remove(Math.min(line, lores.size()));

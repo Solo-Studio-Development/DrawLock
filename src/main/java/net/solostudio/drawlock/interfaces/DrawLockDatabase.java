@@ -14,25 +14,25 @@ public interface DrawLockDatabase {
 
     void createTable();
 
-    void createPlayer(@NotNull String playerName);
+    void createPlayer(@NotNull final String playerName);
 
-    boolean exists(@NotNull String playerName);
+    boolean exists(@NotNull final String playerName);
 
-    boolean isRegistered(@NotNull String playerName);
+    boolean isRegistered(@NotNull final String playerName);
 
-    void savePasswordToDatabase(@NotNull String playerName, @NotNull String password);
+    void savePasswordToDatabase(@NotNull final String playerName, @NotNull final String password);
 
-    void resetFully(@NotNull String playerName);
+    void resetFully(@NotNull final String playerName);
 
     List<String> getEveryPlayerInDatabase();
 
-    void resetWithoutDates(@NotNull String playerName);
+    void resetWithoutDates(@NotNull final String playerName);
 
-    String getPassword(@NotNull String playerName);
+    String getPassword(@NotNull final String playerName);
 
-    void saveDate(@NotNull String playerName, @NotNull String column);
+    void saveDate(@NotNull final String playerName, @NotNull final String column);
 
-    String getLastLogin(@NotNull String playerName);
+    String getLastLogin(@NotNull final String playerName);
 
-    String getCreation(@NotNull String playerName);
+    String getCreation(@NotNull final String playerName);
 }

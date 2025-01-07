@@ -23,7 +23,7 @@ public class ConfigurationManager {
     private File config;
 
     public ConfigurationManager(@NotNull String dir, @NotNull String name) {
-        File file = new File(dir);
+        final var file = new File(dir);
 
         if (!file.exists()) {
             if (!file.mkdirs()) return;

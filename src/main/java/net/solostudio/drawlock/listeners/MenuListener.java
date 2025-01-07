@@ -8,7 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class MenuListener implements Listener {
     @EventHandler
     public void onClick(final InventoryClickEvent event) {
-        if (!(event.getInventory().getHolder() instanceof Menu menu)) return;
+        if (!(event.getInventory().getHolder() instanceof final Menu menu)) return;
 
         event.setCancelled(true);
         menu.handleMenu(event);

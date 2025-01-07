@@ -12,3 +12,7 @@ messages:
   success-change-password: "&c&lDRAWLOCK &8| &aSuccess Password Change!"
   success-reset: "&c&lDRAWLOCK &8| &aSuccess Reset!"
   wrong-password: "&c&lDRAWLOCK &8| &cWrong Password!"
+  totp-welcome: "&c&lDRAWLOCK &8| &aScan the QR code with an authenticator app on your phone!"
+  totp-already-registered: "&c&lDRAWLOCK &8| &aYou already have a secret key! Use the authenticator app to complete the identification!"
+  totp-success: "&c&lDRAWLOCK &8| &aYou have successfully authenticated!"
+  wrong-totp: "&c&lDRAWLOCK &8| &cThe code you entered is incorrect!"

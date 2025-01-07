@@ -56,13 +56,11 @@ public abstract class Menu implements InventoryHolder {
         }
 
         this.setMenuItems();
-        menuController.setCurrentMenu(this);
         menuController.owner().openInventory(inventory);
     }
 
     public void close() {
         canClose = true;
-        menuController.setCurrentMenu(null);
         menuController.owner().closeInventory();
 
         BossBarUtils.removeBossBar(menuController.owner());

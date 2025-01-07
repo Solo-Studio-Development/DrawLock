@@ -35,9 +35,9 @@ public class MenuRegister extends Menu {
 
     @Override
     public void handleMenu(final InventoryClickEvent event) {
-        var slot = event.getSlot();
-        var clickedItem = event.getCurrentItem();
-        var player = menuController.owner();
+        final var slot = event.getSlot();
+        final var clickedItem = event.getCurrentItem();
+        final var player = menuController.owner();
 
         if (clickedItem != null && clickedItem.isSimilar(ItemKeys.REGISTER_BLANK.getItem())) {
             inventory.setItem(slot, ItemKeys.REGISTER_PASSWORD.getItem());
@@ -51,21 +51,20 @@ public class MenuRegister extends Menu {
     }
 
     private void processPasswordRegistration(@NotNull Player player) {
-        String password = selectedSlots.stream()
+        var password = selectedSlots.stream()
                 .map(String::valueOf)
                 .collect(Collectors.joining(", "));
 
-        String hashedPassword = BCryptUtils.hashPassword(password);
+        var hashedPassword = BCryptUtils.hashPassword(password);
 
         close();
         DrawLock.getDatabase().savePasswordToDatabase(player.getName(), hashedPassword);
         DrawLock.getDatabase().saveDate(player.getName(), "CREATED_AT");
         DrawLock.getDatabase().saveDate(player.getName(), "LAST_LOGIN");
-
         player.sendMessage(MessageKeys.SUCCESS_REGISTER.getMessage());
         DrawLockUtils.playSound(player, "register.sounds", ".success");
-
-        DrawLockUtils.sendToServer(menuController.owner(), "register.server");
+        DrawLockUtils.sendToServer(player, "register.server");
+        player.clearActivePotionEffects();
     }
 
     @Override

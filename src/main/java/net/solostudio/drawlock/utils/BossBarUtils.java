@@ -1,12 +1,8 @@
 package net.solostudio.drawlock.utils;
 
 import com.github.Anon8281.universalScheduler.scheduling.tasks.MyScheduledTask;
-import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import net.solostudio.drawlock.DrawLock;
-import net.solostudio.drawlock.config.Config;
-import net.solostudio.drawlock.managers.MenuController;
-import net.solostudio.drawlock.menu.Menu;
 import net.solostudio.drawlock.processor.MessageProcessor;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
@@ -16,7 +12,6 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,7 +21,7 @@ public class BossBarUtils {
     private MyScheduledTask task;
 
     public void removeBossBar(@NotNull Player player) {
-        BossBar bossBar = activeBossBars.remove(player);
+        final BossBar bossBar = activeBossBars.remove(player);
 
         if (bossBar == null) return;
 
@@ -36,19 +31,18 @@ public class BossBarUtils {
     }
 
     public void createBossBar(@NotNull Player player, @NotNull String path) {
-        Config config = DrawLock.getInstance().getConfiguration();
+        final var config = DrawLock.getInstance().getConfiguration();
 
         if (!config.getBoolean(path + ".enabled")) return;
 
-        String rawTitle = MessageProcessor.process(config.getString(path + ".title"));
-        BarColor color = BarColor.valueOf(config.getString(path + ".color").toUpperCase());
-        BarStyle style = BarStyle.valueOf(config.getString(path + ".style").toUpperCase());
-        List<String> flags = config.getList(path + ".flags");
-        List<String> commands = config.getList(path + ".commands");
+        final var rawTitle = MessageProcessor.process(config.getString(path + ".title"));
+        final var color = BarColor.valueOf(config.getString(path + ".color").toUpperCase());
+        final var style = BarStyle.valueOf(config.getString(path + ".style").toUpperCase());
+        final var flags = config.getList(path + ".flags");
+        final var commands = config.getList(path + ".commands");
         final int totalDuration = config.getInt(path + ".time");
         final int[] remainingTime = {totalDuration};
-
-        BossBar bossBar = Bukkit.createBossBar(rawTitle, color, style);
+        final var bossBar = Bukkit.createBossBar(rawTitle, color, style);
 
         activeBossBars.put(player, bossBar);
         flags.forEach(flag -> bossBar.addFlag(BarFlag.valueOf(flag.toUpperCase())));
@@ -75,7 +69,7 @@ public class BossBarUtils {
                 return;
             }
 
-            double progress = (double) remainingTime[0] / totalDuration;
+            var progress = (double) remainingTime[0] / totalDuration;
             bossBar.setProgress(progress);
             bossBar.setTitle(MessageProcessor.process(rawTitle.replace("{time}", String.valueOf(remainingTime[0]))));
         }, 0, 20);

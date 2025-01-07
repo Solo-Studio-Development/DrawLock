@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 
 public class Language extends ConfigurationManager {
-    public Language(@NotNull String name) {
+    public Language(@NotNull final String name) {
         super(DrawLock.getInstance().getDataFolder().getPath() + File.separator + "locales", name);
         save();
     }

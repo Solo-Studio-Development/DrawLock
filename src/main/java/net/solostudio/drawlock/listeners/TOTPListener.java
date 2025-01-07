@@ -1,66 +1,64 @@
 package net.solostudio.drawlock.listeners;
 
-import com.warrenstrange.googleauth.GoogleAuthenticator;
-import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
-import com.warrenstrange.googleauth.ICredentialRepository;
 import net.solostudio.drawlock.DrawLock;
-import net.solostudio.drawlock.database.TOTPCredentials;
-import net.solostudio.drawlock.enums.keys.ConfigKeys;
-import net.solostudio.drawlock.utils.BCryptUtils;
-import net.solostudio.drawlock.utils.TOTPUtils;
+import net.solostudio.drawlock.enums.keys.MessageKeys;
+import net.solostudio.drawlock.services.TOTPService;
+import net.solostudio.drawlock.utils.DrawLockUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 @SuppressWarnings("deprecation")
 public class TOTPListener implements Listener {
     @EventHandler
-    public void onJoin(final PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        TOTPCredentials credentialRepository = new TOTPCredentials();
-        String existingSecretKey = credentialRepository.getSecretKey(player.getName());
+    public void onPlayerChat(final AsyncPlayerChatEvent event) {
+        final var player = event.getPlayer();
+        final var message = event.getMessage().replace(" ", "");
 
-        if (existingSecretKey == null) {
-            GoogleAuthenticatorKey key = DrawLock.getInstance().getGoogleAuthenticator().createCredentials(player.getName());
-            String secretKey = key.getKey();
+        event.setCancelled(true);
 
-            credentialRepository.saveUserCredentials(player.getName(), secretKey, 0, null);
+        final var totpService = DrawLock.getInstance().getTotpService();
+        final var secretKey = totpService.getSecretKey(player.getName());
 
-            String otpAuthUrl = String.format("otpauth://totp/%s?secret=%s&issuer=%s&logo=%s", player.getName(), secretKey, ConfigKeys.TOTP_NAME.getString(), ConfigKeys.TOTP_LOGO_URL.getString());
+        if (secretKey == null) return;
 
-            ItemStack mapItem = TOTPUtils.createMapFromQRCode(otpAuthUrl, player);
-            player.getInventory().addItem(mapItem);
+        try {
+            final boolean isAuthorized = DrawLock.getInstance()
+                    .getGoogleAuthenticator()
+                    .authorize(secretKey, Integer.parseInt(message));
 
-            player.sendMessage("Your secret key: " + secretKey);
-            player.sendMessage("Scan this QR code with your authenticator app.");
-        } else {
-            player.sendMessage("You already have a secret key set up. Use your authenticator app to log in.");
+            if (isAuthorized) {
+                JoinListener.authenticatedPlayers.add(player.getName());
+                DrawLock.getInstance().getScheduler().runTask(() -> {
+                    player.sendMessage(MessageKeys.TOTP_SUCCESS.getMessage());
+                    player.getInventory().clear();
+                    DrawLockUtils.handleLoginOrRegister(player);
+                });
+            } else player.sendMessage(MessageKeys.TOTP_WRONG.getMessage());
+        } catch (NumberFormatException ignored) {
+            player.sendMessage(MessageKeys.TOTP_WRONG.getMessage());
         }
     }
 
     @EventHandler
-    public void onPlayerChat(final AsyncPlayerChatEvent event) {
-        Player player = event.getPlayer();
-        String message = event.getMessage();
-        TOTPCredentials credentialRepository = new TOTPCredentials();
+    public void onMove(final PlayerMoveEvent event) {
+        final var player = event.getPlayer();
 
-        String secretKey = credentialRepository.getSecretKey(player.getName());
+        if (!JoinListener.authenticatedPlayers.contains(player.getName())) {
+            final var from = event.getFrom();
+            final var to = event.getTo();
 
-        if (secretKey != null) {
-            GoogleAuthenticator googleAuthenticator = DrawLock.getInstance().getGoogleAuthenticator();
-
-            boolean isValid = googleAuthenticator.authorize(secretKey, Integer.parseInt(message));
-
-            if (isValid) {
-                event.setCancelled(true);
-                player.getInventory().clear();
-                player.sendMessage("Sikeres autentikáció!");
-            } else {
-                player.sendMessage("Helytelen kód! Próbáld újra.");
-            }
+            if (from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ()) event.setTo(from);
         }
+    }
+
+    @EventHandler
+    public void onCommand(final PlayerCommandPreprocessEvent event) {
+        final var player = event.getPlayer();
+
+        if (!JoinListener.authenticatedPlayers.contains(player.getName())) event.setCancelled(true);
     }
 }

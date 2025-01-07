@@ -29,7 +29,7 @@ public class RegisterUtils {
     public static void registerCommands() {
         LoggerUtils.info("### Registering commands... ###");
 
-        var lamp = BukkitLamp.builder(DrawLock.getInstance())
+        final var lamp = BukkitLamp.builder(DrawLock.getInstance())
                 .exceptionHandler(new CommandExceptionHandler())
                 .suggestionProviders(providers -> providers.addProviderForAnnotation(PlayersFromDatabase.class, playersFromDatabase -> context -> DrawLock.getDatabase().getEveryPlayerInDatabase()
                         .stream()

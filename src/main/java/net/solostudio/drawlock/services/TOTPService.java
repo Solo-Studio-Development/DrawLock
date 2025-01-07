@@ -1,4 +1,4 @@
-package net.solostudio.drawlock.database;
+package net.solostudio.drawlock.services;
 
 import com.warrenstrange.googleauth.ICredentialRepository;
 import net.solostudio.drawlock.DrawLock;
@@ -12,13 +12,14 @@ import java.sql.SQLException;
 import java.util.List;
 import com.google.gson.Gson;
 
-public class TOTPCredentials implements ICredentialRepository {
+public class TOTPService implements ICredentialRepository {
     private final DrawLockDatabase database = DrawLock.getDatabase();
     private final Gson gson = new Gson();
 
     @Override
     public String getSecretKey(@NotNull String username) {
-        String query = "SELECT SECRET FROM totp WHERE USERNAME = ?";
+        final var query = "SELECT SECRET FROM totp WHERE USERNAME = ?";
+
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(query)) {
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -32,8 +33,7 @@ public class TOTPCredentials implements ICredentialRepository {
 
     @Override
     public void saveUserCredentials(@NotNull String username, @NotNull String secretKey, int validationCode, List<Integer> scratchCodes) {
-        String query = "INSERT INTO totp (USERNAME, SECRET, SCRATCH_CODES) VALUES (?, ?, ?) " +
-                "ON DUPLICATE KEY UPDATE SECRET = ?, SCRATCH_CODES = ?";
+        final var query = "INSERT INTO totp (USERNAME, SECRET, SCRATCH_CODES) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE SECRET = ?, SCRATCH_CODES = ?";
 
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(query)) {
             preparedStatement.setString(1, username);

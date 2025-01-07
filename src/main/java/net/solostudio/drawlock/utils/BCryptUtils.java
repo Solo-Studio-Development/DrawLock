@@ -6,11 +6,11 @@ import org.mindrot.jbcrypt.BCrypt;
 
 @UtilityClass
 public class BCryptUtils {
-    public String hashPassword(@NotNull String password) {
+    public String hashPassword(@NotNull final String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
-    public boolean checkPassword(@NotNull String password, @NotNull String hashed) {
+    public boolean checkPassword(@NotNull final String password, @NotNull final String hashed) {
         return BCrypt.checkpw(password, hashed);
     }
 }

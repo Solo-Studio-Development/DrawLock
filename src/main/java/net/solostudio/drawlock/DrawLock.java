@@ -6,7 +6,7 @@ import com.warrenstrange.googleauth.GoogleAuthenticator;
 import lombok.Getter;
 import net.solostudio.drawlock.config.Config;
 import net.solostudio.drawlock.database.DatabaseProxy;
-import net.solostudio.drawlock.database.TOTPCredentials;
+import net.solostudio.drawlock.services.TOTPService;
 import net.solostudio.drawlock.interfaces.DrawLockDatabase;
 import net.solostudio.drawlock.database.H2;
 import net.solostudio.drawlock.database.MySQL;
@@ -35,6 +35,7 @@ public final class DrawLock extends ZapperJavaPlugin {
     @Getter private TaskScheduler scheduler;
     @Getter private Language language;
     @Getter private GoogleAuthenticator googleAuthenticator;
+    @Getter private TOTPService totpService;
     private Config config;
 
     @Override
@@ -50,6 +51,7 @@ public final class DrawLock extends ZapperJavaPlugin {
         initializeComponents();
         initializeDatabaseManager();
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord"); // TODO this!!
+        totpService = new TOTPService();
         // updates - later
 
         try {
@@ -59,7 +61,7 @@ public final class DrawLock extends ZapperJavaPlugin {
         }
 
         new Metrics(this, BSTATS_ID);
-        getGoogleAuthenticator().setCredentialRepository(new TOTPCredentials());
+        getGoogleAuthenticator().setCredentialRepository(new TOTPService());
         registerHook();
     }
 
@@ -89,6 +91,7 @@ public final class DrawLock extends ZapperJavaPlugin {
     private void initializeDatabaseManager() {
         try {
             DrawLockDatabase databaseInstance;
+
             switch (DatabaseTypes.valueOf(ConfigKeys.DATABASE.getString().toUpperCase())) {
                 case MYSQL -> {
                     LoggerUtils.info("### MySQL support found! Starting to initialize it... ###");

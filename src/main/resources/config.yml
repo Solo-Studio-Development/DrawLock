@@ -173,6 +173,8 @@ beautifier:
       enabled: true
       name:
         - "UI_HUD_BUBBLE_POP"
+    blindness:
+        enabled: true
   scoreboards:
     register:
       title: "&c&lREGISTER"
@@ -200,8 +202,9 @@ reset:
 # TOTP Settings                                                  #
 # ============================================================== #
 
+# This setting is VERY useful! If you enable this, you can use the TOTP (Time-based One-Time Password) system to secure your server.
+
 totp:
-  enabled: true
-  name: "My Server"
-  logo: "https://i.imgur.com/tHqZIm7.png"
+  enabled: false
+  name: "My Nice Server"
 

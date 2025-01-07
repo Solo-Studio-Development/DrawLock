@@ -10,7 +10,7 @@ import java.lang.reflect.Proxy;
 
 public class DatabaseProxy {
     @SuppressWarnings("unchecked")
-    public static <T> T createProxy(@NotNull Class<T> clazz, T instance) {
+    public static <T> T createProxy(@NotNull final Class<T> clazz, final T instance) {
         return (T) Proxy.newProxyInstance(
                 clazz.getClassLoader(),
                 new Class<?>[]{clazz},
@@ -20,7 +20,7 @@ public class DatabaseProxy {
 
     private record DatabaseInvocationHandler(@NotNull Object instance) implements InvocationHandler {
         @Override
-        public Object invoke(@NotNull Object proxy, @NotNull Method method, @NotNull Object[] args) throws Throwable {
+        public Object invoke(@NotNull final Object proxy, @NotNull final Method method, @NotNull final Object[] args) throws Throwable {
             if (method.getReturnType().equals(Void.TYPE)) {
                 DrawLock.getInstance().getScheduler().runTaskAsynchronously(() -> {
                     try {

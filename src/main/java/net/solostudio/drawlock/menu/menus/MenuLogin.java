@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class MenuLogin extends Menu {
-    public static final Map<Player, Integer> ATTEMPTS = new HashMap<>();
+    public static final Map<Player, Integer> attempts = new HashMap<>();
 
     private int greenCount = 0;
     private final List<Integer> selectedSlots = new ArrayList<>();
@@ -77,12 +77,14 @@ public class MenuLogin extends Menu {
     }
 
     private void handleSuccessfulLogin() {
-        ATTEMPTS.remove(player);
+        attempts.remove(player);
         close();
         player.sendMessage(MessageKeys.SUCCESS_LOGIN.getMessage());
         DrawLockUtils.playSound(player, "login.sounds", ".success");
         DrawLock.getDatabase().saveDate(player.getName(), "LAST_LOGIN");
-        DrawLockUtils.sendToServer(menuController.owner(), "login.server");
+        DrawLockUtils.sendToServer(player, "login.server");
+        player.clearActivePotionEffects();
+
 
         if (onSuccess != null) onSuccess.run();
     }
@@ -100,16 +102,16 @@ public class MenuLogin extends Menu {
     }
 
     private void setErrorItems() {
-        int currentAttempts = ATTEMPTS.getOrDefault(player, 0) + 1;
+        final int currentAttempts = attempts.getOrDefault(player, 0) + 1;
 
-        ATTEMPTS.put(player, currentAttempts);
+        attempts.put(player, currentAttempts);
 
         if (currentAttempts >= ConfigKeys.MAX_ATTEMPTS.getInt()) {
             close();
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ConfigKeys.ATTEMPT_COMMAND
                     .getString()
                     .replace("{player}", player.getName()));
-            ATTEMPTS.remove(player);
+            attempts.remove(player);
             return;
         }
 
@@ -138,6 +140,7 @@ public class MenuLogin extends Menu {
 
             if (currentFlash[0] == totalFlashes) {
                 task.cancel();
+
                 locked = false;
             }
         }, 0, 5);

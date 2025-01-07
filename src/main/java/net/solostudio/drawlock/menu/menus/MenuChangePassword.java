@@ -15,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.IntStream;
 
 public class MenuChangePassword extends Menu {
@@ -28,15 +27,15 @@ public class MenuChangePassword extends Menu {
     }
 
     @Override
-    public String getMenuName() {
+    public final String getMenuName() {
         return ConfigKeys.CHANGE_PASSWORD_NAME.getString();
     }
 
     @Override
     public void handleMenu(final InventoryClickEvent event) {
-        var slot = event.getSlot();
-        var clickedItem = event.getCurrentItem();
-        var player = menuController.owner();
+        final var slot = event.getSlot();
+        final var clickedItem = event.getCurrentItem();
+        final var player = menuController.owner();
 
         if (clickedItem != null && clickedItem.isSimilar(ItemKeys.CHANGE_PASSWORD_BLANK.getItem())) {
             inventory.setItem(slot, ItemKeys.CHANGE_PASSWORD_PASSWORD.getItem());
@@ -49,13 +48,13 @@ public class MenuChangePassword extends Menu {
         if (event.isShiftClick()) reset();
     }
 
-    private void changePassword(@NotNull Player player) {
-        String password = selectedSlots.stream()
+    private void changePassword(@NotNull final Player player) {
+        final var password = selectedSlots.stream()
                 .map(String::valueOf)
                 .reduce((s1, s2) -> s1 + ", " + s2)
                 .orElse("");
 
-        String hashedPassword = BCryptUtils.hashPassword(password);
+        final var hashedPassword = BCryptUtils.hashPassword(password);
 
         close();
         DrawLock.getDatabase().savePasswordToDatabase(player.getName(), hashedPassword);

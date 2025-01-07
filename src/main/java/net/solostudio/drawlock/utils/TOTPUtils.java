@@ -26,55 +26,60 @@ import java.io.IOException;
 @UtilityClass
 @SuppressWarnings("all")
 public class TOTPUtils {
-    public ItemStack createMapFromQRCode(@NotNull String data, @NotNull Player player) {
-        var mapItem = new ItemStack(Material.FILLED_MAP);
-        var map = Bukkit.createMap(player.getWorld());
+    public ItemStack createMapFromQRCode(@NotNull final String data, @NotNull final Player player) {
+        final var mapItem = new ItemStack(Material.FILLED_MAP);
+        final var map = Bukkit.createMap(player.getWorld());
 
         map.getRenderers().clear();
-
         map.addRenderer(new MapRenderer() {
             private boolean rendered = false;
 
             @Override
-            public void render(@NotNull MapView map, @NotNull MapCanvas canvas, @NotNull Player player) {
+            public void render(@NotNull final MapView map, @NotNull final MapCanvas canvas, @NotNull final Player player) {
                 if (rendered) return;
                 rendered = true;
 
                 try {
-                    BitMatrix bitMatrix = new MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, 200, 200);
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+                    final BitMatrix bitMatrix = new MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, 200, 200);
+                    final var byteArrayOutputStream = new ByteArrayOutputStream();
+                    final var qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+
                     ImageIO.write(qrImage, "PNG", byteArrayOutputStream);
-                    byte[] qrData = byteArrayOutputStream.toByteArray();
-                    BufferedImage resizedImage = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
-                    var graphics = resizedImage.createGraphics();
+
+                    final var qrData = byteArrayOutputStream.toByteArray();
+                    final var resizedImage = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
+                    final var graphics = resizedImage.createGraphics();
 
                     graphics.drawImage(qrImage, 0, 0, 128, 128, null);
                     graphics.dispose();
 
                     for (int x = 0; x < 128; x++) {
                         for (int y = 0; y < 128; y++) {
-                            int rgb = resizedImage.getRGB(x, y);
-                            byte mapColor = MapPalette.matchColor((rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
+                            final int rgb = resizedImage.getRGB(x, y);
+                            final byte mapColor = MapPalette.matchColor((rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
+
                             canvas.setPixel(x, y, mapColor);
                         }
                     }
                 } catch (IOException | WriterException exception ) {
-                    player.sendMessage("Hiba történt a QR-kód térképre renderelése során!");
+                    player.sendMessage("Error while rendering QR code on map! Please contact the server administrator.");
                     LoggerUtils.error(exception.getMessage());
                 }
             }
         });
 
-        var meta = (MapMeta) mapItem.getItemMeta();
+        final var meta = (MapMeta) mapItem.getItemMeta();
+
         meta.setMapView(map);
         mapItem.setItemMeta(meta);
+
         return mapItem;
     }
 
     public void generateQRCode(@NotNull String data, @NotNull String filePath) {
         try {
             BitMatrix bitMatrix = new MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, 200, 200);
+
             MatrixToImageWriter.writeToPath(bitMatrix, "PNG", new File(filePath).toPath());
         } catch (Exception exception) {
             LoggerUtils.error(exception.getMessage());

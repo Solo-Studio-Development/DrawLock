@@ -2,7 +2,6 @@ package net.solostudio.drawlock.hooks;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.solostudio.drawlock.DrawLock;
-import net.solostudio.drawlock.interfaces.DrawLockDatabase;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -41,8 +40,8 @@ public class PlaceholderAPI {
         }
 
         @Override
-        public String onPlaceholderRequest(@NotNull Player player, @NotNull String params) {
-            DrawLockDatabase database = DrawLock.getDatabase();
+        public String onPlaceholderRequest(@NotNull final Player player, @NotNull final String params) {
+            final var database = DrawLock.getDatabase();
 
             return switch (params) {
                 case "last_login" -> database.getLastLogin(player.getName());

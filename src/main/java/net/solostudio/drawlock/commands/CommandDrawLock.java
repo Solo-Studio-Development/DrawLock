@@ -41,10 +41,9 @@ public class CommandDrawLock {
     @Subcommand("changepassword")
     @Description("Changes the password.")
     @CommandPermission("drawlock.changepassword")
-    public void changePassword(@NotNull Player player) {
-        MenuController menuController = MenuController.getMenuUtils(player);
-
-        MenuLogin menuLogin = new MenuLogin(menuController, () -> new MenuChangePassword(menuController).open());
+    public void changePassword(@NotNull final Player player) {
+        final var menuController = MenuController.getMenuUtils(player);
+        final var menuLogin = new MenuLogin(menuController, () -> new MenuChangePassword(menuController).open());
 
         menuLogin.open();
     }
@@ -52,7 +51,7 @@ public class CommandDrawLock {
     @Subcommand("reset")
     @Description("Resets the player.")
     @CommandPermission("drawlock.reset")
-    public void reset(@NotNull CommandSender sender, @PlayersFromDatabase @NotNull String player, @FullyOrNot @NotNull String full) {
+    public void reset(@NotNull final CommandSender sender, @PlayersFromDatabase @NotNull final String player, @FullyOrNot @NotNull final String full) {
         if (DrawLockUtils.valueOf(full)) {
             DrawLock.getDatabase().resetFully(player);
             DrawLockUtils.handleReset(sender, player);

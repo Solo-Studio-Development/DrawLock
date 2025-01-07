@@ -18,12 +18,12 @@ public class MessageProcessor {
     public @NotNull String process(@Nullable String message) {
         if (message == null) return "";
 
-        Matcher matcher = HEX_PATTERN.matcher(message);
-        StringBuilder result = new StringBuilder();
+        final var matcher = HEX_PATTERN.matcher(message);
+        final var result = new StringBuilder();
 
         while (matcher.find()) {
-            String hexCode = matcher.group();
-            StringBuilder builder = new StringBuilder();
+            final var hexCode = matcher.group();
+            final var builder = new StringBuilder();
 
             for (char c : hexCode.substring(1).toCharArray()) {
                 builder.append("&").append(c);
@@ -40,7 +40,7 @@ public class MessageProcessor {
     public @NotNull List<String> processList(@Nullable List<String> messages) {
         if (messages == null) return new ArrayList<>();
 
-        List<String> processedMessages = new ArrayList<>();
+        final var processedMessages = new ArrayList<String>();
 
         messages.forEach(message -> processedMessages.add(process(message)));
         return processedMessages;

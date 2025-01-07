@@ -15,70 +15,69 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 
 public interface ItemFactory {
-    static ItemFactory create(@NotNull Material material) {
+    static ItemFactory create(@NotNull final Material material) {
         return new ItemBuilder(material);
     }
 
-    static ItemFactory create(@NotNull Material material, int count) {
+    static ItemFactory create(@NotNull final Material material, final int count) {
         return new ItemBuilder(material, count);
     }
 
-    static ItemFactory create(@NotNull Material material, int count, short damage) {
+    static ItemFactory create(@NotNull final Material material, final int count, final short damage) {
         return new ItemBuilder(material, count, damage);
     }
 
-    static ItemFactory create(@NotNull Material material, int count, short damage, byte data) {
+    static ItemFactory create(@NotNull final Material material, final int count, final short damage, final byte data) {
         return new ItemBuilder(material, count, damage, data);
     }
 
-    static ItemFactory create(ItemStack item) {
+    static ItemFactory create(final ItemStack item) {
         return new ItemBuilder(item);
     }
 
-    ItemFactory setType(@NotNull Material material);
+    ItemFactory setType(@NotNull final Material material);
 
-    ItemFactory setCount(int newCount);
+    ItemFactory setCount(final int newCount);
 
-    ItemFactory setName(@NotNull String name);
+    ItemFactory setName(@NotNull final String name);
 
-    ItemBuilder addEnchantment(@NotNull Enchantment enchantment, int level);
+    ItemBuilder addEnchantment(@NotNull final Enchantment enchantment, int level);
 
-    default ItemFactory addEnchantments(Map<Enchantment, Integer> enchantments) {
+    default ItemFactory addEnchantments(final Map<Enchantment, Integer> enchantments) {
         enchantments.forEach(this::addEnchantment);
 
         return this;
     }
 
-    ItemBuilder addLore(@NotNull String... lores);
+    ItemBuilder addLore(@NotNull final String... lores);
 
     ItemFactory setUnbreakable();
 
-    default void addFlag(@NotNull ItemFlag... flags) {
+    default void addFlag(@NotNull final ItemFlag... flags) {
         Arrays
                 .stream(flags)
                 .forEach(this::addFlag);
     }
 
-    default ItemFactory setLore(@NotNull String... lores) {
+    default ItemFactory setLore(@NotNull final String... lores) {
         Arrays
                 .stream(lores)
                 .forEach(this::addLore);
         return this;
     }
 
-    ItemFactory removeLore(int line);
+    ItemFactory removeLore(final int line);
 
     ItemStack finish();
 
     boolean isFinished();
 
-    static ItemStack createItemFromString(@NotNull String path) {
-        ConfigurationSection section = DrawLock.getInstance().getConfiguration().getSection(path);
-
-        Material material = Material.valueOf(Objects.requireNonNull(section).getString("material"));
-        int amount = section.getInt("amount", 1);
-        String name = section.getString("name");
-        String[] loreArray = section.getStringList("lore").toArray(new String[0]);
+    static ItemStack createItemFromString(@NotNull final String path) {
+        final var section = DrawLock.getInstance().getConfiguration().getSection(path);
+        final var material = Material.valueOf(Objects.requireNonNull(section).getString("material"));
+        final var amount = section.getInt("amount", 1);
+        final var name = section.getString("name");
+        final var loreArray = section.getStringList("lore").toArray(new String[0]);
 
         IntStream.range(0, loreArray.length).forEach(index -> loreArray[index] = MessageProcessor.process(loreArray[index]));
 

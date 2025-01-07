@@ -23,7 +23,7 @@ public class ScoreboardService {
     }
 
     public static void giveScoreboard(@NotNull Player player, boolean isRegistered) {
-        var board = new FastBoard(player);
+        final var board = new FastBoard(player);
 
         getBoards().put(player, board);
         DrawLock.getInstance().getScheduler().runTaskTimer(() -> {
@@ -32,7 +32,7 @@ public class ScoreboardService {
     }
 
     public static void removeScoreboard(@NotNull Player player) {
-        var board = boards.remove(player);
+        final var board = boards.remove(player);
 
         if (board != null) board.delete();
     }

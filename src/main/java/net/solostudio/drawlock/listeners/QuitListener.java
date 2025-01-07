@@ -12,18 +12,18 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class QuitListener implements Listener {
     @EventHandler
     public void onClose(final InventoryCloseEvent event) {
-        if (!(event.getInventory().getHolder() instanceof Menu menu)) return;
+        if (!(event.getInventory().getHolder() instanceof final Menu menu)) return;
 
         menu.handleInventoryClose(event);
 
-        if (event.getPlayer() instanceof Player player && player.isOnline()) MenuLogin.ATTEMPTS.remove(player);
+        if (event.getPlayer() instanceof final Player player && player.isOnline()) MenuLogin.attempts.remove(player);
     }
 
     @EventHandler
     public void onQuit(final PlayerQuitEvent event) {
-        Player player = event.getPlayer();
+        final var player = event.getPlayer();
 
-        MenuLogin.ATTEMPTS.remove(player);
+        MenuLogin.attempts.remove(player);
         BossBarUtils.removeBossBar(player);
     }
 }

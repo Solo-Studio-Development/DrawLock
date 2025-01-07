@@ -63,8 +63,8 @@ public class H2 implements DrawLockDatabase {
 
     @Override
     public void createTable() {
-        String drawLockTableQuery = "CREATE TABLE IF NOT EXISTS drawlock (PLAYER VARCHAR(255) NOT NULL, PASSWORD VARCHAR(65535) NOT NULL DEFAULT '', CREATED_AT VARCHAR(255), LAST_LOGIN VARCHAR(255), PRIMARY KEY (PLAYER))";
-        String totpTableQuery = "CREATE TABLE IF NOT EXISTS totp (USERNAME VARCHAR(255) NOT NULL, SECRET VARCHAR(255) NOT NULL, SCRATCH_CODES TEXT, PRIMARY KEY (USERNAME))";
+        final var drawLockTableQuery = "CREATE TABLE IF NOT EXISTS drawlock (PLAYER VARCHAR(255) NOT NULL, PASSWORD VARCHAR(65535) NOT NULL DEFAULT '', CREATED_AT VARCHAR(255), LAST_LOGIN VARCHAR(255), PRIMARY KEY (PLAYER))";
+        final var totpTableQuery = "CREATE TABLE IF NOT EXISTS totp (USERNAME VARCHAR(255) NOT NULL, SECRET VARCHAR(255) NOT NULL, SCRATCH_CODES TEXT, PRIMARY KEY (USERNAME))";
 
         try (PreparedStatement drawLockTableStatement = getConnection().prepareStatement(drawLockTableQuery)) {
             drawLockTableStatement.execute();
@@ -80,8 +80,8 @@ public class H2 implements DrawLockDatabase {
     }
 
     @Override
-    public void createPlayer(@NotNull String playerName) {
-        String query = "INSERT IGNORE INTO drawlock (PLAYER, PASSWORD) VALUES (?, '')";
+    public void createPlayer(@NotNull final String playerName) {
+        final var query = "INSERT IGNORE INTO drawlock (PLAYER, PASSWORD) VALUES (?, '')";
 
         try {
             if (!exists(playerName)) {
@@ -96,8 +96,8 @@ public class H2 implements DrawLockDatabase {
     }
 
     @Override
-    public boolean exists(@NotNull String playerName) {
-        String query = "SELECT * FROM drawlock WHERE PLAYER = ?";
+    public boolean exists(@NotNull final String playerName) {
+        final var query = "SELECT * FROM drawlock WHERE PLAYER = ?";
 
         try {
             try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
@@ -113,8 +113,8 @@ public class H2 implements DrawLockDatabase {
     }
 
     @Override
-    public boolean isRegistered(@NotNull String playerName) {
-        String query = "SELECT PASSWORD FROM drawlock WHERE PLAYER = ?";
+    public boolean isRegistered(@NotNull final String playerName) {
+        final var query = "SELECT PASSWORD FROM drawlock WHERE PLAYER = ?";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
             preparedStatement.setString(1, playerName);
@@ -131,8 +131,8 @@ public class H2 implements DrawLockDatabase {
     }
 
     @Override
-    public void savePasswordToDatabase(@NotNull String playerName, @NotNull String password) {
-        String query = "UPDATE drawlock SET PASSWORD = ? WHERE PLAYER = ?";
+    public void savePasswordToDatabase(@NotNull final String playerName, @NotNull final String password) {
+        final var query = "UPDATE drawlock SET PASSWORD = ? WHERE PLAYER = ?";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
             preparedStatement.setString(1, password);
@@ -144,8 +144,8 @@ public class H2 implements DrawLockDatabase {
     }
 
     @Override
-    public void resetFully(@NotNull String playerName) {
-        String query = "UPDATE drawlock SET PASSWORD = '', CREATED_AT = '', LAST_LOGIN = '' WHERE PLAYER = ?";
+    public void resetFully(@NotNull final String playerName) {
+        final var query = "UPDATE drawlock SET PASSWORD = '', CREATED_AT = '', LAST_LOGIN = '' WHERE PLAYER = ?";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
             preparedStatement.setString(1, playerName);
@@ -157,17 +157,13 @@ public class H2 implements DrawLockDatabase {
 
     @Override
     public List<String> getEveryPlayerInDatabase() {
-        List<String> players = new ArrayList<>();
-        String query = "SELECT PLAYER FROM drawlock";
+        final var players = new ArrayList<String>();
+        final var query = "SELECT PLAYER FROM drawlock";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()) {
-                String player = resultSet.getString("PLAYER");
-
-                players.add(player);
-            }
+            while (resultSet.next()) players.add(resultSet.getString("PLAYER"));
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());
         }
@@ -176,8 +172,8 @@ public class H2 implements DrawLockDatabase {
     }
 
     @Override
-    public void resetWithoutDates(@NotNull String playerName) {
-        String query = "UPDATE drawlock SET PASSWORD = '' WHERE PLAYER = ?";
+    public void resetWithoutDates(@NotNull final String playerName) {
+        final var query = "UPDATE drawlock SET PASSWORD = '' WHERE PLAYER = ?";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
             preparedStatement.setString(1, playerName);
@@ -188,10 +184,10 @@ public class H2 implements DrawLockDatabase {
     }
 
     @Override
-    public String getPassword(@NotNull String playerName) {
+    public String getPassword(@NotNull final String playerName) {
         String hashedPassword = null;
 
-        String query = "SELECT PASSWORD FROM drawlock WHERE PLAYER = ?";
+        var query = "SELECT PASSWORD FROM drawlock WHERE PLAYER = ?";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
             preparedStatement.setString(1, playerName);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -205,12 +201,11 @@ public class H2 implements DrawLockDatabase {
     }
 
     @Override
-    public void saveDate(@NotNull String playerName, @NotNull String column) {
+    public void saveDate(@NotNull final String playerName, @NotNull final String column) {
         if (!List.of("CREATED_AT", "LAST_LOGIN").contains(column)) throw new IllegalArgumentException("Invalid column name");
 
-        String query = "UPDATE drawlock SET " + column + " = ? WHERE PLAYER = ?";
-
-        String currentDateTime = new SimpleDateFormat(ConfigKeys.BASIC_DATE_FORMAT.getString()).format(new Date());
+        final var query = "UPDATE drawlock SET " + column + " = ? WHERE PLAYER = ?";
+        final var currentDateTime = new SimpleDateFormat(ConfigKeys.BASIC_DATE_FORMAT.getString()).format(new Date());
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
             preparedStatement.setString(1, currentDateTime);
@@ -222,8 +217,8 @@ public class H2 implements DrawLockDatabase {
     }
 
     @Override
-    public String getLastLogin(@NotNull String playerName) {
-        String query = "SELECT LAST_LOGIN FROM drawlock WHERE PLAYER = ?";
+    public String getLastLogin(@NotNull final String playerName) {
+        final var query = "SELECT LAST_LOGIN FROM drawlock WHERE PLAYER = ?";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
             preparedStatement.setString(1, playerName);
@@ -239,8 +234,8 @@ public class H2 implements DrawLockDatabase {
     }
 
     @Override
-    public String getCreation(@NotNull String playerName) {
-        String query = "SELECT CREATED_AT FROM drawlock WHERE PLAYER = ?";
+    public String getCreation(@NotNull final String playerName) {
+        final var query = "SELECT CREATED_AT FROM drawlock WHERE PLAYER = ?";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
             preparedStatement.setString(1, playerName);

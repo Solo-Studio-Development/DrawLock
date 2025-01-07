@@ -18,7 +18,7 @@ public class VersionSupport {
         if (version == VersionTypes.UNKNOWN) LoggerUtils.error("### VERSION NOT FOUND! ###");
 
 
-        Class<?> clazz = Class.forName("net.solostudio.drawlock.versions.nms." + version.name() + ".ServerVersion");
+        final var clazz = Class.forName("net.solostudio.drawlock.versions.nms." + version.name() + ".ServerVersion");
         versionSupport = (ServerVersionSupport) clazz.getConstructor(Plugin.class).newInstance(DrawLock.getInstance());
 
         if (!versionSupport.isSupported()) {

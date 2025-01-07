@@ -17,6 +17,7 @@ public enum ConfigKeys {
 
     BEAUTIFIER_JOIN_MESSAGE("beautifier.join.message"),
     BEAUTIFIER_JOIN_MESSAGE_IS_ENABLED("beautifier.join.enabled"),
+    BEAUTIFIER_JOIN_BLINDNESS_IS_ENABLED("beautifier.join.blindness.enabled"),
 
     MINIMUM_PASSWORD_LENGTH("password.min-max-length"),
 

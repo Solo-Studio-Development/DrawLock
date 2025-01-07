@@ -9,15 +9,15 @@ import org.jetbrains.annotations.NotNull;
 public class LoggerUtils {
     private final Logger logger = LogManager.getLogger("DrawLock");
 
-    public void info(@NotNull String msg, @NotNull Object... objs) {
+    public void info(@NotNull final String msg, @NotNull final Object... objs) {
         logger.info(msg, objs);
     }
 
-    public void warn(@NotNull String msg, @NotNull Object... objs) {
+    public void warn(@NotNull final String msg, @NotNull final Object... objs) {
         logger.warn(msg, objs);
     }
 
-    public void error(@NotNull String msg, @NotNull Object... objs) {
+    public void error(@NotNull final String msg, @NotNull final Object... objs) {
         logger.error(msg, objs);
     }
 }

@@ -18,7 +18,12 @@ public enum MessageKeys {
     SUCCESS_CHANGE_PASSWORD("messages.success-change-password"),
     SUCCESS_RESET("messages.success-reset"),
 
-    WRONG_PASSWORD("messages.wrong-password");
+    WRONG_PASSWORD("messages.wrong-password"),
+
+    TOTP_WELCOME("messages.totp-welcome"),
+    TOTP_SUCCESS("messages.totp-success"),
+    TOTP_WRONG("messages.wrong-totp"),
+    TOTP_ALREADY_REGISTERED("messages.totp-already-registered");
 
     private final String path;
 
